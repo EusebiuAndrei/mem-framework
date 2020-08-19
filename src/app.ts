@@ -12,29 +12,30 @@ import { SuccessResponse } from './core/ApiResponse';
 import validator, { ValidationSource } from './helpers/validator';
 import schema from './routes/v1/profile/schema';
 import decorateWithCQS from './core/decorateWithCQS';
+import { CQS } from './core/cqs';
 
 process.on('uncaughtException', (e) => {
   Logger.error(e);
 });
 
-const app = express();
+export const app = express();
 
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true, parameterLimit: 50000 }));
+// app.use(bodyParser.json({ limit: '10mb' }));
+// app.use(bodyParser.urlencoded({ limit: '10mb', extended: true, parameterLimit: 50000 }));
 app.use(cors({ origin: corsUrl, optionsSuccessStatus: 200 }));
 
-app.use(
-  decorateWithCQS({
-    context: (req, res) => {
-      let user = null;
-      if (req.headers.authorization) {
-        user = { id: '43d', name: 'Pette', isAuthenticated: true };
-      }
+// app.use(
+//   decorateWithCQS({
+//     context: (req, res) => {
+//       let user = null;
+//       if (req.headers.authorization) {
+//         user = { id: '43d', name: 'Pette', isAuthenticated: true };
+//       }
 
-      return { user };
-    },
-  }),
-);
+//       return { user };
+//     },
+//   }),
+// );
 
 app.get(
   '/some',
@@ -44,6 +45,28 @@ app.get(
     return new SuccessResponse('success', { args, ctx }); //.send(res);
   }),
 );
+
+CQS(app, {
+  method: 'get',
+  resource: '/john',
+  schema: schema.userId,
+  middlewares: [
+    bodyParser.json({ limit: '10mb' }),
+    decorateWithCQS({
+      context: (req, res) => {
+        let user = null;
+        if (req.headers.authorization) {
+          user = { id: '43d', name: 'Pette', isAuthenticated: true };
+        }
+
+        return { user };
+      },
+    }),
+  ],
+  handler(args, ctx, info) {
+    return new SuccessResponse('success', { args, ctx });
+  },
+});
 
 // Routes
 app.use('/v1', routesV1);
