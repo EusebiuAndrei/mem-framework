@@ -38,3 +38,5 @@ const cqsServer = new CQServer({
 cqsServer.listen();
 
 const abc = new QueryHandler();
+// const ab = undefined;
+// ab.op = 'p';
