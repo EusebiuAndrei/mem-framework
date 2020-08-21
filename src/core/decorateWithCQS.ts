@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { CQSRequest, GenericDictionary } from 'app-request';
 
-interface DecorateWithCQSProps {
+export interface DecorateWithCQSProps {
   args?(req: CQSRequest, res: Response): GenericDictionary;
   context?(req: CQSRequest, res: Response): GenericDictionary;
   info?(req: CQSRequest, res: Response): GenericDictionary;

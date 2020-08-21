@@ -14,10 +14,6 @@ import schema from './routes/v1/profile/schema';
 import decorateWithCQS from './core/decorateWithCQS';
 import { CQS } from './core/cqs';
 
-process.on('uncaughtException', (e) => {
-  Logger.error(e);
-});
-
 export const app = express();
 
 // app.use(bodyParser.json({ limit: '10mb' }));
@@ -46,27 +42,27 @@ app.get(
   }),
 );
 
-CQS(app, {
-  method: 'get',
-  resource: '/john',
-  schema: schema.userId,
-  middlewares: [
-    bodyParser.json({ limit: '10mb' }),
-    decorateWithCQS({
-      context: (req, res) => {
-        let user = null;
-        if (req.headers.authorization) {
-          user = { id: '43d', name: 'Pette', isAuthenticated: true };
-        }
+// CQS(app, {
+//   method: 'get',
+//   resource: '/john',
+//   schema: schema.userId,
+//   middlewares: [
+//     bodyParser.json({ limit: '10mb' }),
+//     decorateWithCQS({
+//       context: (req, res) => {
+//         let user = null;
+//         if (req.headers.authorization) {
+//           user = { id: '43d', name: 'Pette', isAuthenticated: true };
+//         }
 
-        return { user };
-      },
-    }),
-  ],
-  handler(args, ctx, info) {
-    return new SuccessResponse('success', { args, ctx });
-  },
-});
+//         return { user };
+//       },
+//     }),
+//   ],
+//   handler(args, ctx, info) {
+//     return new SuccessResponse('success', { args, ctx });
+//   },
+// });
 
 // Routes
 app.use('/v1', routesV1);
@@ -86,6 +82,10 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     }
     ApiError.handle(new InternalError(), res);
   }
+});
+
+process.on('uncaughtException', (e) => {
+  Logger.error(e);
 });
 
 export default app;

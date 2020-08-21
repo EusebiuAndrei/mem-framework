@@ -4,6 +4,7 @@ import Joi from '@hapi/joi';
 import { ValidationSource } from '../helpers/validator';
 import validator from '../helpers/validator';
 import asyncHandler from '../helpers/asyncHandler';
+import decorateWithCQS, { DecorateWithCQSProps } from './decorateWithCQS';
 
 type HTTPMethods = 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
 type QueryMethods = 'all' | 'get' | 'head';
@@ -35,15 +36,16 @@ export type DispatchProps = {
 //   props: DispatchProps,
 // ) => (req: Request, res: Response, next: NextFunction) => Promise<void | any>;
 
-export type Dispatch = (app: Express, props: DispatchProps) => Express;
+export type Dispatch = (app: Express, cqs: DecorateWithCQSProps, props: DispatchProps) => Express;
 
 export const QueryHttpMethods = ['get', 'head', 'all'];
 export const MutationHttpMethods = ['post', 'put', 'patch', 'delete', 'options'];
 
-export const CQS: Dispatch = (app, props) =>
+export const CQS: Dispatch = (app, cqs, props) =>
   app[props.method](
     props.resource,
     ...(props.middlewares || []),
+    decorateWithCQS(cqs),
     validator(props.schema, ValidationSource.ARGS),
     asyncHandler(async (req: CQSRequest, res: Response) => {
       const { args, ctx, info } = req.cqs;
