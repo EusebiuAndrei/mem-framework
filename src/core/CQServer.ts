@@ -1,10 +1,11 @@
 import express, { Express } from 'express';
-import decorateWithCQS, { DecorateWithCQSProps } from './decorateWithCQS';
+import { DecorateWithCQSProps } from './decorateWithCQS';
 import Logger from './Logger';
 import { port } from '../config';
 import { CQS } from './cqs';
 import ErrorHandler from './ErrorHandler';
 import MiddlewareHandler from './MiddlewareHandler';
+import QueryHandler from './QueryHandler';
 
 interface CQServerProps extends DecorateWithCQSProps {
   queries: any[];
@@ -14,7 +15,7 @@ interface CQServerProps extends DecorateWithCQSProps {
 class CQServer {
   readonly app: Express = express();
   readonly cqs: DecorateWithCQSProps;
-  readonly queries: any[];
+  readonly queries: QueryHandler[];
   readonly mutations: any[];
 
   constructor(props: CQServerProps) {
@@ -30,7 +31,10 @@ class CQServer {
       throw new Error('No queries provided');
     }
 
-    this.queries.forEach((query) => CQS(this.app, this.cqs, query));
+    this.queries.forEach((queryHandler) => {
+      queryHandler.handleQueries(this.app, this.cqs);
+      this.app.use(queryHandler.router);
+    });
   }
 
   async handleMutations() {
@@ -46,7 +50,7 @@ class CQServer {
     const errorHandler = new ErrorHandler(this.app);
 
     await middlewareHandler.useConfigMiddlewares();
-    this.app.use(decorateWithCQS(this.cqs));
+    // this.app.use(decorateWithCQS(this.cqs));
     await this.handleQueries();
     // this.handleMutations();
     await errorHandler.handleErrors();

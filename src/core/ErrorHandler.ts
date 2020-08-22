@@ -25,6 +25,7 @@ class ErrorHandler {
     // Middleware Error Handler
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      console.log(err);
       if (err instanceof ApiError) {
         ApiError.handle(err, res);
       } else {

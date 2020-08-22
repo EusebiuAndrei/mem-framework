@@ -17,7 +17,7 @@ const logLevel = environment === 'development' ? 'debug' : 'warn';
 
 const options = {
   file: {
-    level: logLevel,
+    level: 'debug',
     filename: dir + '/%DATE%.log',
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
