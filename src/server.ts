@@ -1,8 +1,7 @@
 import CQServer from './core/@cqs/CQServer';
-import HelloQuery from './HelloQuery';
-import HelloMutation from './HelloMutation';
+import root from './modules';
 
-const cqsServer = new CQServer({
+const cqServer = new CQServer({
   context: (req) => {
     let user = null;
     if (req.headers.authorization) {
@@ -11,8 +10,8 @@ const cqsServer = new CQServer({
 
     return { user };
   },
-  queries: [new HelloQuery()],
-  mutations: [new HelloMutation()],
+  queries: root.queries,
+  mutations: root.mutations,
 });
 
-cqsServer.listen();
+cqServer.listen();

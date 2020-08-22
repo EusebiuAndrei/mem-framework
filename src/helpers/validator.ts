@@ -38,15 +38,12 @@ export default (schema: Joi.ObjectSchema, source: ValidationSource = ValidationS
   next: NextFunction,
 ) => {
   try {
-    console.log(req.cqs.args);
-    console.log(source);
-    const args = source === ValidationSource.ARGS ? req.cqs.args : req[source];
-    console.log(args);
+    // console.log(req.cqs.args);
+    // console.log(source);
+    const validationSchema = source === ValidationSource.ARGS ? req.cqs.args : req[source];
+    // console.log(args);
 
-    const { error } = schema.validate(args);
-    // source === ValidationSource.ARGS
-    //   ? schema.validate(req.cqs.args)
-    //   : schema.validate(req[source]);
+    const { error } = schema.validate(validationSchema);
 
     if (!error) return next();
 

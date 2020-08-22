@@ -12,7 +12,6 @@ const decorateWithCQS = (props: DecorateWithCQSProps) => (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log('AAAAAAAAAAAAAAAAAAAAAA');
   const { query, params, body, cookies, signedCookies } = req;
 
   // There are specific to a request (local)
