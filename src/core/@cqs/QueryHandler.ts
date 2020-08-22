@@ -11,6 +11,7 @@ type QueryDecorators = {
   method: QueryMethods;
   path: string;
   schema: Joi.ObjectSchema<any>;
+  middlewares: any[];
 };
 
 const hiddenMethods = [
@@ -47,6 +48,7 @@ class QueryHandler {
         method: 'get',
         path: '',
         schema: Joi.object().keys({}),
+        middlewares: [],
       }),
     );
   }
@@ -63,7 +65,7 @@ class QueryHandler {
     this.getQueriesPropertyDescriptor().forEach(({ name, descriptor: { value: query } }) => {
       const props = this.queries.get(name);
       const middlewares = [
-        // before decoration middlewares
+        ...props.middlewares,
         decorateWithCQS(cqs),
         validator(props.schema, ValidationSource.ARGS),
       ];

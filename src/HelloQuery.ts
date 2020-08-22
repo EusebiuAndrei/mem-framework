@@ -8,7 +8,7 @@ class HelloQuery extends QueryHandler {
     super();
   }
 
-  @get('/hello')
+  @get('/hello') // <=> @method('get') @path('/hello')
   @schema(joiSchema.userId)
   public getHello(args: any, ctx: any, info: any): any {
     return new SuccessResponse('success', { args, ctx });

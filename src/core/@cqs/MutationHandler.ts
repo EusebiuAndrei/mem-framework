@@ -11,6 +11,7 @@ type MutationDecorators = {
   method: MutationMethods;
   path: string;
   schema: Joi.ObjectSchema<any>;
+  middlewares: any[];
 };
 
 const hiddenMethods = [
@@ -50,6 +51,7 @@ class MutationHandler {
         method: 'post',
         path: '',
         schema: Joi.object().keys({}),
+        middlewares: [],
       }),
     );
   }
@@ -66,7 +68,7 @@ class MutationHandler {
     this.getMutationsPropertyDescriptor().forEach(({ name, descriptor: { value: query } }) => {
       const props = this.mutations.get(name);
       const middlewares = [
-        // before decoration middlewares
+        ...props.middlewares,
         decorateWithCQS(cqs),
         validator(props.schema, ValidationSource.ARGS),
       ];

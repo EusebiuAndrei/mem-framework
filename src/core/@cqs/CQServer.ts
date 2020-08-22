@@ -2,7 +2,6 @@ import express, { Express } from 'express';
 import { DecorateWithCQSProps } from './decorateWithCQS';
 import Logger from '../Logger';
 import { port } from '../../config';
-import { CQS } from '../@cqs/cqs';
 import ErrorHandler from './ErrorHandler';
 import MiddlewareHandler from './MiddlewareHandler';
 import QueryHandler from './QueryHandler';
