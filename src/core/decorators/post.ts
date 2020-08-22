@@ -1,22 +1,21 @@
-import QueryHandler from '../@cqs/QueryHandler';
-import { HTTPMethods } from '../@cqs/cqs';
 import MutationHandler from '../@cqs/MutationHandler';
 import { wow } from '.';
 
-export function method(httpMethod: HTTPMethods) {
+// @method + @path
+export function post(resourcePath?: string) {
   const decorator = function (
-    target: QueryHandler | MutationHandler,
+    target: MutationHandler,
     propertyKey: string | symbol,
     descriptor: TypedPropertyDescriptor<wow>,
   ) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
-      const requests = this.queries || this.mutations;
-      const queryDecorators = requests.get(propertyKey);
-      requests.set(propertyKey, {
+      const queryDecorators = this.mutations.get(propertyKey);
+      this.mutations.set(propertyKey, {
         ...queryDecorators,
-        method: httpMethod,
+        method: 'post',
+        path: resourcePath || queryDecorators.path,
       });
       return method.apply(this, args);
     };

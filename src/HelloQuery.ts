@@ -1,7 +1,7 @@
-import QueryHandler from './QueryHandler';
-import { get, schema } from './decorators/';
-import joiSchema from '../routes/v1/profile/schema';
-import { SuccessResponse } from './ApiResponse';
+import QueryHandler from './core/@cqs/QueryHandler';
+import { get, schema } from './core/decorators/';
+import joiSchema from './routes/v1/profile/schema';
+import { SuccessResponse } from './core/ApiResponse';
 
 class HelloQuery extends QueryHandler {
   constructor() {

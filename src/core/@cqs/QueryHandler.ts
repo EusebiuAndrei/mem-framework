@@ -1,11 +1,11 @@
 import express, { Express } from 'express';
 import Joi from '@hapi/joi';
 import decorateWithCQS, { DecorateWithCQSProps } from './decorateWithCQS';
-import validator from '../helpers/validator';
-import asyncHandler from '../helpers/asyncHandler';
-import { ValidationSource } from '../helpers/validator';
+import validator from '../../helpers/validator';
+import asyncHandler from '../../helpers/asyncHandler';
+import { ValidationSource } from '../../helpers/validator';
 import { CQSRequest } from 'app-request';
-import { QueryMethods } from './cqs';
+import { QueryMethods } from '../@cqs/cqs';
 
 type QueryDecorators = {
   method: QueryMethods;
@@ -20,6 +20,7 @@ const hiddenMethods = [
   'handleQueries',
   'getQueriesPropertyDescriptor',
 ];
+
 class QueryHandler {
   private decorated = false;
   public readonly router = express.Router();
@@ -28,7 +29,6 @@ class QueryHandler {
   constructor() {
     this.initializeQueries();
     this.decorateQueries();
-    // this.handleQueries();
   }
 
   private getQueriesPropertyDescriptor(): Array<{ name: string; descriptor: PropertyDescriptor }> {

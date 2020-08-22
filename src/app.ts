@@ -11,8 +11,8 @@ import asyncHandler from './helpers/asyncHandler';
 import { SuccessResponse } from './core/ApiResponse';
 import validator, { ValidationSource } from './helpers/validator';
 import schema from './routes/v1/profile/schema';
-import decorateWithCQS from './core/decorateWithCQS';
-import { CQS } from './core/cqs';
+import decorateWithCQS from './core/@cqs/decorateWithCQS';
+import { CQS } from './core/@cqs/cqs';
 
 export const app = express();
 

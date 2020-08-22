@@ -9,3 +9,4 @@ export * from './schema';
 export * from './get';
 
 // mutation
+export * from './post';

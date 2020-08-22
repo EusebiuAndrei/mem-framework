@@ -10,12 +10,12 @@ class MiddlewareHandler {
   }
 
   async useConfigMiddlewares() {
-    const middlewaresDirPath = path.join(__dirname, '..', 'middlewares');
+    const middlewaresDirPath = path.join(__dirname, '..', '..', 'middlewares');
     const files = await fs.promises.readdir(middlewaresDirPath);
     const moduleNames = files.filter((file) => file.endsWith('.js'));
 
     for (const moduleName of moduleNames) {
-      const modulePath = path.join(__dirname, '..', 'middlewares', moduleName);
+      const modulePath = path.join(__dirname, '..', '..', 'middlewares', moduleName);
       const { default: middlewares } = await import(modulePath);
       if (middlewares && middlewares.length > 0) {
         middlewares.forEach((middleware: any) => {

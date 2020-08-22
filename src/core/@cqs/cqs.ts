@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction, Express, Router } from 'express';
 import { CQSRequest, GenericDictionary } from 'app-request';
 import Joi from '@hapi/joi';
-import { ValidationSource } from '../helpers/validator';
-import validator from '../helpers/validator';
-import asyncHandler from '../helpers/asyncHandler';
+import { ValidationSource } from '../../helpers/validator';
+import validator from '../../helpers/validator';
+import asyncHandler from '../../helpers/asyncHandler';
 import decorateWithCQS, { DecorateWithCQSProps } from './decorateWithCQS';
 
 export type HTTPMethods = 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';

@@ -1,14 +1,9 @@
-import CQServer from './core/CQServer';
-import HelloQuery from './core/HelloQuery';
-
-// app
-//   .listen(port, () => {
-//     Logger.info(`server running on port : ${port}`);
-//   })
-//   .on('error', (e) => Logger.error(e));
+import CQServer from './core/@cqs/CQServer';
+import HelloQuery from './HelloQuery';
+import HelloMutation from './HelloMutation';
 
 const cqsServer = new CQServer({
-  context: (req, res) => {
+  context: (req) => {
     let user = null;
     if (req.headers.authorization) {
       user = { id: '43d', name: 'Pette', isAuthenticated: true };
@@ -17,7 +12,7 @@ const cqsServer = new CQServer({
     return { user };
   },
   queries: [new HelloQuery()],
-  mutations: [],
+  mutations: [new HelloMutation()],
 });
 
 cqsServer.listen();

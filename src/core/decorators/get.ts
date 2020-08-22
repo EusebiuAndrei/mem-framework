@@ -1,4 +1,4 @@
-import QueryHandler from '../QueryHandler';
+import QueryHandler from '../@cqs/QueryHandler';
 import { wow } from '.';
 
 // @method + @path

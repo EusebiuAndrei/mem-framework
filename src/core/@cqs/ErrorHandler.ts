@@ -1,7 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import { NotFoundError, ApiError, InternalError } from './ApiError';
-import Logger from './Logger';
-import { environment } from '../config';
+import { NotFoundError, ApiError, InternalError } from '../ApiError';
+import Logger from '../Logger';
+import { environment } from '../../config';
 
 class ErrorHandler {
   readonly app: Express = express();
