@@ -1,5 +1,8 @@
-import HelloQuery from './HelloQuery';
-import HelloMutation from './HelloMutation';
+// queries
+import HelloQuery from './queries/HelloQuery';
+
+// mutations
+import HelloMutation from './mutations/HelloMutation';
 
 export default {
   queries: [new HelloQuery()],

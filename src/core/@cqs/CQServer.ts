@@ -31,7 +31,7 @@ class CQServer {
 
     this.queries.forEach((queryHandler) => {
       queryHandler.handle(this.cqs);
-      this.app.use(queryHandler.router);
+      this.app.use(`/${queryHandler.resource}`, queryHandler.router);
     });
   }
 
@@ -42,7 +42,7 @@ class CQServer {
 
     this.mutations.forEach((mutationHandler) => {
       mutationHandler.handle(this.cqs);
-      this.app.use(mutationHandler.router);
+      this.app.use(`/${mutationHandler.resource}`, mutationHandler.router);
     });
   }
 

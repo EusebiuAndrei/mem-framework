@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express from 'express';
 import Joi from '@hapi/joi';
 import { DecorateWithCQSProps } from './decorateWithCQS';
 import { HTTPMethods } from '../@cqs/cqs';
@@ -16,8 +16,9 @@ type ExpandedProperty = {
 };
 
 abstract class CQHandler<V extends HTTPMethods = HTTPMethods> {
-  protected decorated = false;
   public readonly router = express.Router();
+  public resource = '';
+  protected decorated = false;
   protected decoratorsPayload: Map<string, DecoratorsPayload<V>> = new Map<
     string,
     DecoratorsPayload<V>
