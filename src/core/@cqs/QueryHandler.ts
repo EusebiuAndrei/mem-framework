@@ -6,6 +6,7 @@ import asyncHandler from '../../helpers/asyncHandler';
 import { ValidationSource } from '../../helpers/validator';
 import { CQSRequest } from 'app-request';
 import { QueryMethods } from '../@cqs/cqs';
+import { seal } from '../decorators';
 
 type QueryDecorators = {
   method: QueryMethods;
@@ -13,14 +14,6 @@ type QueryDecorators = {
   schema: Joi.ObjectSchema<any>;
   middlewares: any[];
 };
-
-const hiddenMethods = [
-  'constructor',
-  'initializeQueries',
-  'decorateQueries',
-  'handleQueries',
-  'getQueriesPropertyDescriptor',
-];
 
 class QueryHandler {
   private decorated = false;
@@ -32,13 +25,14 @@ class QueryHandler {
     this.decorateQueries();
   }
 
+  @seal
   private getQueriesPropertyDescriptor(): Array<{ name: string; descriptor: PropertyDescriptor }> {
     return Object.entries(Object.getOwnPropertyDescriptors(Object.getPrototypeOf(this)))
       .map(([propertyDescriptorName, propertyDescriptor]) => ({
         name: propertyDescriptorName,
         descriptor: propertyDescriptor,
       }))
-      .filter((queryPropertyDescriptor) => !hiddenMethods.includes(queryPropertyDescriptor.name));
+      .filter((queryPropertyDescriptor) => queryPropertyDescriptor.name !== 'constructor');
   }
 
   private initializeQueries(): void {

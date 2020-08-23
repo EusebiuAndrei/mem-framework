@@ -11,3 +11,6 @@ export * from './get';
 
 // mutation
 export * from './post';
+
+// common
+export * from './seal';

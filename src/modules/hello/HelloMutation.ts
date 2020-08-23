@@ -9,7 +9,7 @@ class HelloMutation extends MutationHandler {
     super();
   }
 
-  // Full usage example
+  // Full decorators usage example
   @post('/hello') // <=> @method('post') @path('/hello')
   @use(bodyParser.json({ limit: '10mb' }))
   @schema(joiSchema.userId)

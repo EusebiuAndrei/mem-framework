@@ -1,5 +1,5 @@
 import QueryHandler from '../../core/@cqs/QueryHandler';
-import { get, schema } from '../../core/decorators';
+import { get, schema, seal } from '../../core/decorators';
 import joiSchema from '../../routes/v1/profile/schema';
 import { SuccessResponse } from '../../core/ApiResponse';
 

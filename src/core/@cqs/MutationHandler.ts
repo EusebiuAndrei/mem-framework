@@ -14,14 +14,6 @@ type MutationDecorators = {
   middlewares: any[];
 };
 
-const hiddenMethods = [
-  'constructor',
-  'initializeMutations',
-  'decorateMutations',
-  'handleMutations',
-  'getMutationsPropertyDescriptor',
-];
-
 class MutationHandler {
   private decorated = false;
   public readonly router = express.Router();
@@ -41,7 +33,7 @@ class MutationHandler {
         name: propertyDescriptorName,
         descriptor: propertyDescriptor,
       }))
-      .filter((queryPropertyDescriptor) => !hiddenMethods.includes(queryPropertyDescriptor.name));
+      .filter((queryPropertyDescriptor) => queryPropertyDescriptor.name !== 'constructor');
   }
 
   private initializeMutations(): void {
