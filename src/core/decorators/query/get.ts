@@ -1,5 +1,5 @@
-import QueryHandler from '../@cqs/QueryHandler';
-import { wow } from '.';
+import QueryHandler from '../../@cqs/QueryHandler';
+import { wow } from '..';
 
 // @method + @path
 export function get(resourcePath?: string) {
@@ -11,11 +11,11 @@ export function get(resourcePath?: string) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
-      const queryDecorators = this.queries.get(propertyKey);
-      this.queries.set(propertyKey, {
-        ...queryDecorators,
+      const methodDecoratorsPayload = this.decoratorsPayload.get(propertyKey);
+      this.decoratorsPayload.set(propertyKey, {
+        ...methodDecoratorsPayload,
         method: 'get',
-        path: resourcePath || queryDecorators.path,
+        path: resourcePath || methodDecoratorsPayload.path,
       });
       return method.apply(this, args);
     };

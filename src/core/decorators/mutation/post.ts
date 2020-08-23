@@ -1,5 +1,5 @@
-import MutationHandler from '../@cqs/MutationHandler';
-import { wow } from '.';
+import MutationHandler from '../../@cqs/MutationHandler';
+import { wow } from '..';
 
 // @method + @path
 export function post(resourcePath?: string) {
@@ -11,11 +11,11 @@ export function post(resourcePath?: string) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
-      const queryDecorators = this.mutations.get(propertyKey);
-      this.mutations.set(propertyKey, {
-        ...queryDecorators,
+      const methodDecoratorsPayload = this.decoratorsPayload.get(propertyKey);
+      this.decoratorsPayload.set(propertyKey, {
+        ...methodDecoratorsPayload,
         method: 'post',
-        path: resourcePath || queryDecorators.path,
+        path: resourcePath || methodDecoratorsPayload.path,
       });
       return method.apply(this, args);
     };

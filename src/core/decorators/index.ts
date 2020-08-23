@@ -1,16 +1,16 @@
 export type wow = (args: any, ctx: any, info: any) => any;
 
 // base
-export * from './method';
-export * from './path';
-export * from './schema';
-export * from './use';
+export * from './base/method';
+export * from './base/path';
+export * from './base/schema';
+export * from './base/use';
 
 // query
-export * from './get';
+export * from './query/get';
 
 // mutation
-export * from './post';
+export * from './mutation/post';
 
 // common
-export * from './seal';
+export * from './common/seal';

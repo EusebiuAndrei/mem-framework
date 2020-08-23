@@ -1,5 +1,5 @@
-import QueryHandler from '../@cqs/QueryHandler';
-import { wow } from '.';
+import QueryHandler from '../../@cqs/QueryHandler';
+import { wow } from '..';
 
 export function seal(
   target: QueryHandler,

@@ -6,7 +6,7 @@ import ErrorHandler from './ErrorHandler';
 import MiddlewareHandler from './MiddlewareHandler';
 import QueryHandler from './QueryHandler';
 import MutationHandler from './MutationHandler';
-//
+
 interface CQServerProps extends DecorateWithCQSProps {
   queries: any[];
   mutations: any[];
@@ -30,7 +30,7 @@ class CQServer {
     }
 
     this.queries.forEach((queryHandler) => {
-      queryHandler.handleQueries(this.app, this.cqs);
+      queryHandler.handle(this.cqs);
       this.app.use(queryHandler.router);
     });
   }
@@ -41,7 +41,7 @@ class CQServer {
     }
 
     this.mutations.forEach((mutationHandler) => {
-      mutationHandler.handleMutations(this.app, this.cqs);
+      mutationHandler.handle(this.cqs);
       this.app.use(mutationHandler.router);
     });
   }
