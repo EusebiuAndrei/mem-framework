@@ -6,11 +6,11 @@ interface GenericDictionary {
   [key: string]: any;
 }
 
-declare interface CQSRequest extends Request {
+declare interface CQSRequest<TContext, TInfo> extends Request {
   cqs: {
     args: GenericDictionary;
-    ctx: GenericDictionary;
-    info: GenericDictionary; // Omit<Request, 'query' | 'params' | 'body' | 'cookies' | 'signedCookies'>;
+    ctx: TContext;
+    info: TInfo; // Omit<Request, 'query' | 'params' | 'body' | 'cookies' | 'signedCookies'>;
   };
 }
 declare interface PublicRequest extends Request {

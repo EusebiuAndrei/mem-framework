@@ -1,12 +1,12 @@
 import Joi from '@hapi/joi';
 import CQHandler from '../../@cqs/CQHandler';
-import { wow } from '..';
+import { CQMethod } from '../../types';
 
 export function schema(validationSchema: Joi.ObjectSchema<any>) {
   const decorator = function (
     target: CQHandler,
     propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<wow>,
+    descriptor: TypedPropertyDescriptor<CQMethod>,
   ) {
     const method = descriptor.value;
 

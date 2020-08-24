@@ -1,10 +1,10 @@
 import QueryHandler from '../../@cqs/QueryHandler';
-import { wow } from '..';
+import { CQMethod } from '../../types';
 
 export function seal(
   target: QueryHandler,
   propertyKey: string | symbol,
-  descriptor: TypedPropertyDescriptor<wow>,
+  descriptor: TypedPropertyDescriptor<CQMethod>,
 ) {
   descriptor.writable = false;
   descriptor.enumerable = false;

@@ -7,18 +7,18 @@ import MiddlewareHandler from './MiddlewareHandler';
 import QueryHandler from './QueryHandler';
 import MutationHandler from './MutationHandler';
 
-interface CQServerProps extends DecorateWithCQSProps {
+interface CQServerProps<TContext, TInfo> extends DecorateWithCQSProps<TContext, TInfo> {
   queries: any[];
   mutations: any[];
 }
 
-class CQServer {
+class CQServer<TContext, TInfo> {
   readonly app: Express = express();
-  readonly cqs: DecorateWithCQSProps;
+  readonly cqs: DecorateWithCQSProps<TContext, TInfo>;
   readonly queries: QueryHandler[];
   readonly mutations: MutationHandler[];
 
-  constructor(props: CQServerProps) {
+  constructor(props: CQServerProps<TContext, TInfo>) {
     this.cqs = { args: props.args, context: props.context, info: props.info };
     this.queries = props.queries;
     this.mutations = props.mutations;

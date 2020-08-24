@@ -32,17 +32,17 @@ export const JoiAuthBearer = () =>
     return value;
   }, 'Authorization Header Validation');
 
-export default (schema: Joi.ObjectSchema, source: ValidationSource = ValidationSource.BODY) => (
-  req: CQSRequest,
-  res: Response,
-  next: NextFunction,
-) => {
+export default <TContext, TInfo>(
+  schema: Joi.ObjectSchema,
+  source: ValidationSource = ValidationSource.BODY,
+) => (req: CQSRequest<TContext, TInfo>, res: Response, next: NextFunction) => {
   try {
     // console.log(req.cqs.args);
     // console.log(source);
     const validationSchema = source === ValidationSource.ARGS ? req.cqs.args : req[source];
-    // console.log(args);
-
+    console.log(schema);
+    // console.log(args); //
+    //
     const { error } = schema.validate(validationSchema);
 
     if (!error) return next();

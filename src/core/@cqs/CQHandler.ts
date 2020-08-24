@@ -1,9 +1,9 @@
 import express from 'express';
 import Joi from '@hapi/joi';
 import { DecorateWithCQSProps } from './decorateWithCQS';
-import { HTTPMethods } from '../@cqs/cqs';
+import { HTTPMethod } from '../types';
 
-type DecoratorsPayload<Method extends HTTPMethods> = {
+type DecoratorsPayload<Method extends HTTPMethod> = {
   method: Method;
   path: string;
   schema: Joi.ObjectSchema<any>;
@@ -15,7 +15,7 @@ type ExpandedProperty = {
   descriptor: PropertyDescriptor;
 };
 
-abstract class CQHandler<V extends HTTPMethods = HTTPMethods> {
+abstract class CQHandler<V extends HTTPMethod = HTTPMethod> {
   public readonly router = express.Router();
   public resource = '';
   protected decorated = false;
@@ -55,7 +55,7 @@ abstract class CQHandler<V extends HTTPMethods = HTTPMethods> {
     this.decorated = true;
   }
 
-  public abstract handle(cqs: DecorateWithCQSProps): void;
+  public abstract handle<TContext, TInfo>(cqs: DecorateWithCQSProps<TContext, TInfo>): void;
 }
 
 export default CQHandler;

@@ -1,5 +1,3 @@
-export type wow = (args: any, ctx: any, info: any) => any;
-
 // base
 export * from './base/method';
 export * from './base/path';

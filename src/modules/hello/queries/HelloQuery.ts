@@ -1,8 +1,8 @@
 import QueryHandler from '../../../core/@cqs/QueryHandler';
 import { get, schema } from '../../../core/decorators';
-import joiSchema from '../../../routes/v1/profile/schema';
 import { SuccessResponse } from '../../../core/ApiResponse';
-
+import { userId, UserId } from '../schema';
+import { TContext, TInfo } from '../../../types';
 class HelloQuery extends QueryHandler {
   public resource = 'hello';
 
@@ -11,8 +11,8 @@ class HelloQuery extends QueryHandler {
   }
 
   @get('') // <=> @method('get') @path('/hello')
-  @schema(joiSchema.userId)
-  public getHello(args: any, ctx: any, info: any): any {
+  @schema(userId)
+  public getHello(args: UserId, ctx: TContext, info: TInfo): any {
     return new SuccessResponse('success', { args, ctx });
   }
 }

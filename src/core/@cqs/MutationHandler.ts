@@ -3,15 +3,15 @@ import validator from '../../helpers/validator';
 import asyncHandler from '../../helpers/asyncHandler';
 import { ValidationSource } from '../../helpers/validator';
 import { CQSRequest } from 'app-request';
-import { MutationMethods } from '../@cqs/cqs';
+import { MutationMethod } from '../types';
 import CQHandler from './CQHandler';
 
-class MutationHandler extends CQHandler<MutationMethods> {
+class MutationHandler extends CQHandler<MutationMethod> {
   constructor() {
     super();
   }
 
-  public handle(cqs: DecorateWithCQSProps): void {
+  public handle<TContext, TInfo>(cqs: DecorateWithCQSProps<TContext, TInfo>): void {
     this.getExpandedProperties().forEach(({ name, descriptor: { value: mutation } }) => {
       const props = this.decoratorsPayload.get(name);
       const middlewares = [
@@ -22,7 +22,7 @@ class MutationHandler extends CQHandler<MutationMethods> {
       this.router[props.method](
         props.path,
         ...middlewares,
-        asyncHandler(async (req: CQSRequest) => {
+        asyncHandler(async (req: CQSRequest<TContext, TInfo>) => {
           const { args, ctx, info } = req.cqs;
           return mutation.call(this, args, ctx, info);
         }),
