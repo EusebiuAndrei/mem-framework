@@ -1,6 +1,6 @@
 import QueryHandler from '../../../core/@cqs/QueryHandler';
 import { get, schema } from '../../../core/decorators';
-import { SuccessResponse } from '../../../core/ApiResponse';
+import { SuccessResponse } from '../../../core/api/ApiResponse';
 import { userId, UserId } from '../schema';
 import { TContext, TInfo } from '../../../types';
 class HelloQuery extends QueryHandler {

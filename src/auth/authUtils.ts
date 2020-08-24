@@ -1,5 +1,5 @@
 import { Tokens } from 'app-request';
-import { AuthFailureError, InternalError } from '../core/ApiError';
+import { AuthFailureError, InternalError } from '../core/api/ApiError';
 import JWT, { JwtPayload } from '../core/JWT';
 import { Types } from 'mongoose';
 import User from '../database/model/User';

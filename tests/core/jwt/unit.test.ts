@@ -1,6 +1,6 @@
 import { readFileSpy } from './mock';
 import JWT, { JwtPayload } from '../../../src/core/JWT';
-import { BadTokenError, TokenExpiredError } from '../../../src/core/ApiError';
+import { BadTokenError, TokenExpiredError } from '../../../src/core/api/ApiError';
 
 describe('JWT class tests', () => {
   const issuer = 'issuer';

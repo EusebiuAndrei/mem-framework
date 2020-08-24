@@ -1,6 +1,6 @@
 import { post, schema, use } from '../../../core/decorators';
 import joiSchema from '../../../routes/v1/profile/schema';
-import { SuccessResponse } from '../../../core/ApiResponse';
+import { SuccessResponse } from '../../../core/api/ApiResponse';
 import MutationHandler from '../../../core/@cqs/MutationHandler';
 import bodyParser from 'body-parser';
 

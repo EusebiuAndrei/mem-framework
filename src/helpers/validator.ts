@@ -1,7 +1,7 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 import Logger from '../core/Logger';
-import { BadRequestError } from '../core/ApiError';
+import { BadRequestError } from '../core/api/ApiError';
 import { Types } from 'mongoose';
 import { CQSRequest } from 'app-request';
 

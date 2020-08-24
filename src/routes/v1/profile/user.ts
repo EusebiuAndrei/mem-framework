@@ -1,8 +1,8 @@
 import express from 'express';
-import { SuccessResponse } from '../../../core/ApiResponse';
+import { SuccessResponse } from '../../../core/api/ApiResponse';
 import UserRepo from '../../../database/repository/UserRepo';
 import { ProtectedRequest } from 'app-request';
-import { BadRequestError } from '../../../core/ApiError';
+import { BadRequestError } from '../../../core/api/ApiError';
 import { Types } from 'mongoose';
 import validator, { ValidationSource } from '../../../helpers/validator';
 import schema from './schema';

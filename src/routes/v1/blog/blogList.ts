@@ -1,6 +1,6 @@
 import express from 'express';
-import { SuccessResponse } from '../../../core/ApiResponse';
-import { NoDataError, BadRequestError } from '../../../core/ApiError';
+import { SuccessResponse } from '../../../core/api/ApiResponse';
+import { NoDataError, BadRequestError } from '../../../core/api/ApiError';
 import BlogRepo from '../../../database/repository/BlogRepo';
 import { Types } from 'mongoose';
 import validator, { ValidationSource } from '../../../helpers/validator';

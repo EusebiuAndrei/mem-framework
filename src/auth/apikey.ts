@@ -1,6 +1,6 @@
 import express from 'express';
 import ApiKeyRepo from '../database/repository/ApiKeyRepo';
-import { ForbiddenError } from '../core/ApiError';
+import { ForbiddenError } from '../core/api/ApiError';
 import Logger from '../core/Logger';
 import { PublicRequest } from 'app-request';
 import schema from './schema';
