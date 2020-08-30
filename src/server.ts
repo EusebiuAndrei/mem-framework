@@ -2,6 +2,7 @@ import CQServer from './core/@cqs/CQServer';
 import root from './modules';
 import { CQSRequest } from 'app-request';
 import { TContext, TInfo } from './types';
+import 'reflect-metadata';
 
 const cqServer = new CQServer<TContext, TInfo>({
   context: (req: CQSRequest<TContext, TInfo>) => {

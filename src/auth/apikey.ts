@@ -4,8 +4,8 @@ import { ForbiddenError } from '../core/api/ApiError';
 import Logger from '../core/Logger';
 import { PublicRequest } from 'app-request';
 import schema from './schema';
-import validator, { ValidationSource } from '../helpers/validator';
-import asyncHandler from '../helpers/asyncHandler';
+import validator, { ValidationSource } from '../core/helpers/validator';
+import asyncHandler from '../core/helpers/asyncHandler';
 
 const router = express.Router();
 

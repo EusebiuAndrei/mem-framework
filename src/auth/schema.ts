@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import { JoiAuthBearer } from '../helpers/validator';
+import { JoiAuthBearer } from '../core/helpers/validator';
 
 export default {
   apiKey: Joi.object()

@@ -4,9 +4,9 @@ import UserRepo from '../../../database/repository/UserRepo';
 import { ProtectedRequest } from 'app-request';
 import { BadRequestError } from '../../../core/api/ApiError';
 import { Types } from 'mongoose';
-import validator, { ValidationSource } from '../../../helpers/validator';
+import validator, { ValidationSource } from '../../../core/helpers/validator';
 import schema from './schema';
-import asyncHandler from '../../../helpers/asyncHandler';
+import asyncHandler from '../../../core/helpers/asyncHandler';
 import _ from 'lodash';
 import authentication from '../../../auth/authentication';
 

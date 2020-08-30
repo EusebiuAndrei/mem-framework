@@ -1,9 +1,11 @@
 import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
-import Logger from '../core/Logger';
-import { BadRequestError } from '../core/api/ApiError';
+import Logger from '../Logger';
+import { BadRequestError } from '../api/ApiError';
 import { Types } from 'mongoose';
 import { CQSRequest } from 'app-request';
+import { plainToClass } from 'class-transformer';
+import { validate, IsDefined } from 'class-validator';
 
 export enum ValidationSource {
   BODY = 'body',
@@ -35,13 +37,21 @@ export const JoiAuthBearer = () =>
 export default <TContext, TInfo>(
   schema: Joi.ObjectSchema,
   source: ValidationSource = ValidationSource.BODY,
-) => (req: CQSRequest<TContext, TInfo>, res: Response, next: NextFunction) => {
+) => async (req: CQSRequest<TContext, TInfo>, res: Response, next: NextFunction) => {
   try {
     // console.log(req.cqs.args);
     // console.log(source);
     const validationSchema = source === ValidationSource.ARGS ? req.cqs.args : req[source];
-    console.log(schema);
+
+    // class-validator
+    const post = plainToClass(Post, validationSchema);
+    // console.log(schema);
     // console.log(args); //
+    const classErrors = await validate(post);
+
+    if (classErrors && classErrors.length > 0) {
+      next(new BadRequestError(classErrors[0].toString()));
+    }
     //
     const { error } = schema.validate(validationSchema);
 
@@ -56,3 +66,55 @@ export default <TContext, TInfo>(
     next(error);
   }
 };
+
+// ==============
+import {
+  Contains,
+  IsInt,
+  MinLength,
+  MaxLength,
+  IsEmail,
+  IsFQDN,
+  IsDate,
+  ArrayNotEmpty,
+  ArrayMinSize,
+  ArrayMaxSize,
+  IsEnum,
+} from 'class-validator';
+
+export enum PostType {
+  Public,
+  Private,
+}
+
+export class Post {
+  @MinLength(10)
+  @MaxLength(20)
+  title: string;
+
+  @Contains('hello')
+  text: string;
+
+  @IsInt()
+  @IsDefined()
+  rating: number;
+
+  @IsEmail()
+  email: string;
+
+  @IsFQDN()
+  site: string;
+
+  @IsDate()
+  createDate: Date;
+
+  @ArrayNotEmpty()
+  @ArrayMinSize(2)
+  @ArrayMaxSize(5)
+  @MinLength(3, { each: true, message: 'Tag is too short. Minimal length is $value characters' })
+  @MaxLength(50, { each: true, message: 'Tag is too long. Maximal length is $value characters' })
+  tags: string[];
+
+  @IsEnum(PostType)
+  type: PostType;
+}

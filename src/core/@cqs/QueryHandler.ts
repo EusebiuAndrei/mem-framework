@@ -1,7 +1,7 @@
 import decorateWithCQS, { DecorateWithCQSProps } from './decorateWithCQS';
-import validator from '../../helpers/validator';
-import asyncHandler from '../../helpers/asyncHandler';
-import { ValidationSource } from '../../helpers/validator';
+import validator from '../helpers/validator';
+import asyncHandler from '../helpers/asyncHandler';
+import { ValidationSource } from '../helpers/validator';
 import { CQSRequest } from 'app-request';
 import { QueryMethod } from '../types';
 import CQHandler from './CQHandler';

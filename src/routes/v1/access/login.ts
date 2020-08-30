@@ -5,9 +5,9 @@ import UserRepo from '../../../database/repository/UserRepo';
 import { BadRequestError, AuthFailureError } from '../../../core/api/ApiError';
 import KeystoreRepo from '../../../database/repository/KeystoreRepo';
 import { createTokens } from '../../../auth/authUtils';
-import validator from '../../../helpers/validator';
+import validator from '../../../core/helpers/validator';
 import schema from './schema';
-import asyncHandler from '../../../helpers/asyncHandler';
+import asyncHandler from '../../../core/helpers/asyncHandler';
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
 

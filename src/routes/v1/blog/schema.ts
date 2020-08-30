@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import { JoiObjectId, JoiUrlEndpoint } from '../../../helpers/validator';
+import { JoiObjectId, JoiUrlEndpoint } from '../../../core/helpers/validator';
 
 export default {
   blogUrl: Joi.object().keys({

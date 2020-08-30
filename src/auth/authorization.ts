@@ -2,7 +2,7 @@ import express from 'express';
 import { ProtectedRequest } from 'app-request';
 import { AuthFailureError } from '../core/api/ApiError';
 import RoleRepo from '../database/repository/RoleRepo';
-import asyncHandler from '../helpers/asyncHandler';
+import asyncHandler from '../core/helpers/asyncHandler';
 
 const router = express.Router();
 

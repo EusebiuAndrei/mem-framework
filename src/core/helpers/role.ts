@@ -1,4 +1,4 @@
-import { RoleCode } from '../database/model/Role';
+import { RoleCode } from '../../database/model/Role';
 import { RoleRequest } from 'app-request';
 import { Response, NextFunction } from 'express';
 

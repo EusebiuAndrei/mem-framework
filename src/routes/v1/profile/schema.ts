@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import { JoiObjectId } from '../../../helpers/validator';
+import { JoiObjectId } from '../../../core/helpers/validator';
 
 export default {
   userId: Joi.object().keys({

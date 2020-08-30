@@ -8,9 +8,9 @@ import JWT from '../../../core/JWT';
 import KeystoreRepo from '../../../database/repository/KeystoreRepo';
 import crypto from 'crypto';
 import { validateTokenData, createTokens, getAccessToken } from '../../../auth/authUtils';
-import validator, { ValidationSource } from '../../../helpers/validator';
+import validator, { ValidationSource } from '../../../core/helpers/validator';
 import schema from './schema';
-import asyncHandler from '../../../helpers/asyncHandler';
+import asyncHandler from '../../../core/helpers/asyncHandler';
 
 const router = express.Router();
 

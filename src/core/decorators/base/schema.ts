@@ -2,7 +2,7 @@ import Joi from '@hapi/joi';
 import CQHandler from '../../@cqs/CQHandler';
 import { CQMethod } from '../../types';
 
-export function schema(validationSchema: Joi.ObjectSchema<any>) {
+export function schema(validationSchema: Joi.ObjectSchema<any>, some?: any) {
   const decorator = function (
     target: CQHandler,
     propertyKey: string | symbol,
@@ -11,6 +11,7 @@ export function schema(validationSchema: Joi.ObjectSchema<any>) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
+      console.log(some, typeof some);
       const methodDecoratorsPayload = this.decoratorsPayload.get(propertyKey);
       this.decoratorsPayload.set(propertyKey, {
         ...methodDecoratorsPayload,

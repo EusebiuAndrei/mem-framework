@@ -3,9 +3,9 @@ import { SuccessResponse } from '../../../core/api/ApiResponse';
 import { NoDataError, BadRequestError } from '../../../core/api/ApiError';
 import BlogRepo from '../../../database/repository/BlogRepo';
 import { Types } from 'mongoose';
-import validator, { ValidationSource } from '../../../helpers/validator';
+import validator, { ValidationSource } from '../../../core/helpers/validator';
 import schema from './schema';
-import asyncHandler from '../../../helpers/asyncHandler';
+import asyncHandler from '../../../core/helpers/asyncHandler';
 import User from '../../../database/model/User';
 
 const router = express.Router();
