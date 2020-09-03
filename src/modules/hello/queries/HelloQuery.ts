@@ -11,7 +11,7 @@ class HelloQuery extends QueryHandler {
   }
 
   @get('') // <=> @method('get') @path('/hello')
-  @schema(userId, new Post())
+  @schema<Post>(Post)
   public getHello(args: Post, ctx: TContext, info: TInfo): any {
     return new SuccessResponse('success', { args, ctx });
   }

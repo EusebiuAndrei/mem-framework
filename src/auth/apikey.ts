@@ -10,7 +10,7 @@ import asyncHandler from '../core/helpers/asyncHandler';
 const router = express.Router();
 
 export default router.use(
-  validator(schema.apiKey, ValidationSource.HEADER),
+  // validator(schema.apiKey, ValidationSource.HEADER),
   asyncHandler(async (req: PublicRequest, res, next) => {
     req.apiKey = req.headers['x-api-key'].toString();
 

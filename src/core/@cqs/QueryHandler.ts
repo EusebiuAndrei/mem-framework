@@ -17,7 +17,8 @@ class QueryHandler extends CQHandler<QueryMethod> {
       const middlewares = [
         ...props.middlewares,
         decorateWithCQS(cqs),
-        validator<TContext, TInfo>(props.schema, ValidationSource.ARGS),
+        // validator<TContext, TInfo>(props.schema, ValidationSource.ARGS),
+        props.validator,
       ];
       this.router[props.method](
         props.path,

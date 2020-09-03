@@ -30,6 +30,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-oas-generator": "^1.0.26",
     "helmet": "^3.21.3",
     "joi-extract-type": "^15.0.8",
     "joiful": "^2.0.1",

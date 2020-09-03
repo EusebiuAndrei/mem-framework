@@ -6,6 +6,7 @@ import ErrorHandler from './ErrorHandler';
 import MiddlewareHandler from './MiddlewareHandler';
 import QueryHandler from './QueryHandler';
 import MutationHandler from './MutationHandler';
+import generator from 'express-oas-generator';
 
 interface CQServerProps<TContext, TInfo> extends DecorateWithCQSProps<TContext, TInfo> {
   queries: any[];
@@ -47,6 +48,23 @@ class CQServer<TContext, TInfo> {
   }
 
   async run() {
+    // generator.init(
+    //   this.app,
+    //   function (spec) {
+    //     // _.set(
+    //     //   spec,
+    //     //   'paths["/students/{name}"].get.parameters[0].description',
+    //     //   'description of a parameter',
+    //     // );
+    //     return spec;
+    //   },
+    //   '../../test_spec.json',
+    //   1000,
+    //   'api-docs',
+    //   ['Hello'],
+    //   ['hello'],
+    // );
+
     const middlewareHandler = new MiddlewareHandler(this.app);
     const errorHandler = new ErrorHandler(this.app);
 

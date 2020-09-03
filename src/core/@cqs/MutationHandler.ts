@@ -17,7 +17,7 @@ class MutationHandler extends CQHandler<MutationMethod> {
       const middlewares = [
         ...props.middlewares,
         decorateWithCQS(cqs),
-        validator(props.schema, ValidationSource.ARGS),
+        props.validator, // validator(props.schema, ValidationSource.ARGS),
       ];
       this.router[props.method](
         props.path,

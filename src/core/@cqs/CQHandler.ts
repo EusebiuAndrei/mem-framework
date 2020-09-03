@@ -8,6 +8,7 @@ type DecoratorsPayload<Method extends HTTPMethod> = {
   path: string;
   schema: Joi.ObjectSchema<any>;
   middlewares: any[];
+  validator: any;
 };
 
 type ExpandedProperty = {
@@ -46,6 +47,7 @@ abstract class CQHandler<V extends HTTPMethod = HTTPMethod> {
         path: '',
         schema: Joi.object().keys({}),
         middlewares: [],
+        validator: () => '',
       }),
     );
   }
