@@ -1,9 +1,9 @@
-import CQHandler from '../../@cqs/CQHandler';
+import ActionHandler from '../../@cqs/ActionHandler';
 import { HTTPMethod, CQMethod } from '../../types';
 
 export function method(httpMethod: HTTPMethod) {
   const decorator = function (
-    target: CQHandler,
+    target: ActionHandler,
     propertyKey: string | symbol,
     descriptor: TypedPropertyDescriptor<CQMethod>,
   ) {

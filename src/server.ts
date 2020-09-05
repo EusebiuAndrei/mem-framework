@@ -1,20 +1,23 @@
+import 'reflect-metadata';
 import CQServer from './core/@cqs/CQServer';
 import root from './modules';
-import { CQSRequest } from 'app-request';
-import { TContext, TInfo } from './types';
-import 'reflect-metadata';
+import { TContext } from './types';
+import { Request } from 'express';
+// d
+const cqServer = new CQServer<TContext>({
+  factory: {
+    args: (req: Request) => {
+      const globalReq = req as any;
+      return { file: globalReq.file };
+    },
+    context: (req: Request) => {
+      let user = null;
+      if (req.headers.authorization) {
+        user = { id: '43d', name: 'Pette', isAuthenticated: true };
+      }
 
-const cqServer = new CQServer<TContext, TInfo>({
-  context: (req: CQSRequest<TContext, TInfo>) => {
-    let user = null;
-    if (req.headers.authorization) {
-      user = { id: '43d', name: 'Pette', isAuthenticated: true };
-    }
-
-    return { user };
-  },
-  info: (req: CQSRequest<TContext, TInfo>) => {
-    return {};
+      return { user };
+    },
   },
   queries: root.queries,
   mutations: root.mutations,

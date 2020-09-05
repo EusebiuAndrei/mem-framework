@@ -1,49 +1,20 @@
-import {
-  Contains,
-  IsInt,
-  MinLength,
-  MaxLength,
-  IsEmail,
-  IsFQDN,
-  IsDate,
-  ArrayNotEmpty,
-  ArrayMinSize,
-  ArrayMaxSize,
-  IsEnum,
-} from 'class-validator';
+import { MinLength } from 'class-validator';
+import { Context } from '../../../types';
+import { Info } from '../../../core/@cqs/types';
+import { SuccessResponse } from '../../../core/api/ApiResponse';
 
-export enum PostType {
-  Public,
-  Private,
+export class Hello {
+  @MinLength(3)
+  id: string;
 }
 
-export class Post {
-  @MinLength(10)
-  @MaxLength(20)
-  title: string;
+export class GetHelloArgs extends Hello {}
 
-  @Contains('hello')
-  text: string;
+export interface GetHelloResult {
+  args: Hello;
+  ctx: Context;
+}
 
-  @IsInt()
-  rating: number;
-
-  @IsEmail()
-  email: string;
-
-  @IsFQDN()
-  site: string;
-
-  @IsDate()
-  createDate: Date;
-
-  @ArrayNotEmpty()
-  @ArrayMinSize(2)
-  @ArrayMaxSize(5)
-  @MinLength(3, { each: true, message: 'Tag is too short. Minimal length is $value characters' })
-  @MaxLength(50, { each: true, message: 'Tag is too long. Maximal length is $value characters' })
-  tags: string[];
-
-  @IsEnum(PostType)
-  type: PostType;
+export interface HelloQuery {
+  getHello(args: GetHelloArgs, ctx: Context, info: Info): SuccessResponse<GetHelloResult>;
 }

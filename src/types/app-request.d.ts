@@ -2,17 +2,6 @@ import { Request } from 'express';
 import User from '../database/model/User';
 import Keystore from '../database/model/Keystore';
 
-interface GenericDictionary {
-  [key: string]: any;
-}
-
-declare interface CQSRequest<TContext, TInfo> extends Request {
-  cqs: {
-    args: GenericDictionary;
-    ctx: TContext;
-    info: TInfo; // Omit<Request, 'query' | 'params' | 'body' | 'cookies' | 'signedCookies'>;
-  };
-}
 declare interface PublicRequest extends Request {
   apiKey: string;
 }

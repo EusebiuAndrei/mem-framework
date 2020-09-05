@@ -1,4 +1,4 @@
-import { GenericDictionary } from 'app-request';
+import { BaseContext } from './core/@cqs/types';
 
 export type TContext = {
   user: null | {
@@ -8,4 +8,4 @@ export type TContext = {
   };
 };
 
-export type TInfo = GenericDictionary;
+export type Context = TContext & BaseContext;

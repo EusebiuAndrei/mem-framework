@@ -1,26 +1,26 @@
 import express, { Express } from 'express';
-import { DecorateWithCQSProps } from './decorateWithCQS';
 import Logger from '../Logger';
 import { port } from '../../config';
-import ErrorHandler from './ErrorHandler';
 import MiddlewareHandler from './MiddlewareHandler';
+import ErrorHandler from './ErrorHandler';
 import QueryHandler from './QueryHandler';
 import MutationHandler from './MutationHandler';
-import generator from 'express-oas-generator';
+import { ACIFactory } from './types';
 
-interface CQServerProps<TContext, TInfo> extends DecorateWithCQSProps<TContext, TInfo> {
-  queries: any[];
-  mutations: any[];
+export interface CQServerProps<TContext> {
+  queries: QueryHandler[];
+  mutations: MutationHandler[];
+  factory: ACIFactory<TContext>;
 }
 
-class CQServer<TContext, TInfo> {
+class CQServer<TContext> {
   readonly app: Express = express();
-  readonly cqs: DecorateWithCQSProps<TContext, TInfo>;
+  readonly factory: ACIFactory<TContext>;
   readonly queries: QueryHandler[];
   readonly mutations: MutationHandler[];
 
-  constructor(props: CQServerProps<TContext, TInfo>) {
-    this.cqs = { args: props.args, context: props.context, info: props.info };
+  constructor(props: CQServerProps<TContext>) {
+    this.factory = props.factory;
     this.queries = props.queries;
     this.mutations = props.mutations;
   }
@@ -31,7 +31,7 @@ class CQServer<TContext, TInfo> {
     }
 
     this.queries.forEach((queryHandler) => {
-      queryHandler.handle(this.cqs);
+      queryHandler.handle(this.factory);
       this.app.use(`/${queryHandler.resource}`, queryHandler.router);
     });
   }
@@ -42,34 +42,16 @@ class CQServer<TContext, TInfo> {
     }
 
     this.mutations.forEach((mutationHandler) => {
-      mutationHandler.handle(this.cqs);
+      mutationHandler.handle(this.factory);
       this.app.use(`/${mutationHandler.resource}`, mutationHandler.router);
     });
   }
 
   async run() {
-    // generator.init(
-    //   this.app,
-    //   function (spec) {
-    //     // _.set(
-    //     //   spec,
-    //     //   'paths["/students/{name}"].get.parameters[0].description',
-    //     //   'description of a parameter',
-    //     // );
-    //     return spec;
-    //   },
-    //   '../../test_spec.json',
-    //   1000,
-    //   'api-docs',
-    //   ['Hello'],
-    //   ['hello'],
-    // );
-
     const middlewareHandler = new MiddlewareHandler(this.app);
     const errorHandler = new ErrorHandler(this.app);
 
     await middlewareHandler.useConfigMiddlewares();
-    // this.app.use(decorateWithCQS(this.cqs));
     await this.handleQueries();
     await this.handleMutations();
     await errorHandler.handleErrors();

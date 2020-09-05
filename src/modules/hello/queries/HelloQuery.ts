@@ -1,9 +1,11 @@
 import QueryHandler from '../../../core/@cqs/QueryHandler';
 import { get, schema } from '../../../core/decorators';
 import { SuccessResponse } from '../../../core/api/ApiResponse';
-import { userId, UserId, Post } from '../schema';
-import { TContext, TInfo } from '../../../types';
-class HelloQuery extends QueryHandler {
+import { GetHelloArgs, HelloQuery as IHelloQuery } from '../types/HelloTypes';
+import { Context } from '../../../types';
+import { Info } from '../../../core/@cqs/types';
+//
+class HelloQuery extends QueryHandler implements IHelloQuery {
   public resource = 'hello';
 
   constructor() {
@@ -11,8 +13,12 @@ class HelloQuery extends QueryHandler {
   }
 
   @get('') // <=> @method('get') @path('/hello')
-  @schema<Post>(Post)
-  public getHello(args: Post, ctx: TContext, info: TInfo): any {
+  @schema(GetHelloArgs)
+  public getHello(
+    args: GetHelloArgs,
+    ctx: Context,
+    info: Info,
+  ): SuccessResponse<{ args: GetHelloArgs; ctx: Context }> {
     return new SuccessResponse('success', { args, ctx });
   }
 }

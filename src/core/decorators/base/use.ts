@@ -1,9 +1,9 @@
-import CQHandler from '../../@cqs/CQHandler';
+import ActionHandler from '../../@cqs/ActionHandler';
 import { CQMethod } from '../../types';
 
-export function use(middleware: any) {
+export function use(middlewares: any[]) {
   const decorator = function (
-    target: CQHandler,
+    target: ActionHandler,
     propertyKey: string | symbol,
     descriptor: TypedPropertyDescriptor<CQMethod>,
   ) {
@@ -15,7 +15,7 @@ export function use(middleware: any) {
       const methodDecoratorsPayload = this.decoratorsPayload.get(propertyKey);
       this.decoratorsPayload.set(propertyKey, {
         ...methodDecoratorsPayload,
-        middlewares: [...methodDecoratorsPayload.middlewares, middleware],
+        middlewares,
       });
 
       return method.apply(this, args);
