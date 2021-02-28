@@ -65,4 +65,4 @@ interface UserMutation {
     @Query
     class UserQuery implements UserQuery
 */
-// idem for mutations
+// idem for commands

@@ -1,10 +1,7 @@
-// queries
-import HelloQuery from './queries/HelloQuery';
-
-// mutations
-import HelloMutation from './mutations/HelloMutation';
+// controllers
+import HelloController from './controllers/HelloController';
+// import './IocProfiler';
 
 export default {
-  queries: [new HelloQuery()],
-  mutations: [new HelloMutation()],
+  controllers: [new HelloController()],
 };

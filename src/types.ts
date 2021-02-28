@@ -1,4 +1,4 @@
-import { BaseContext } from './core/@cqs/types';
+import { BaseContext } from './packages/core/@cqs/types';
 
 export type TContext = {
   user: null | {

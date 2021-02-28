@@ -1,7 +1,7 @@
 import { MinLength } from 'class-validator';
 import { Context } from '../../../types';
-import { Info } from '../../../core/@cqs/types';
-import { SuccessResponse } from '../../../core/api/ApiResponse';
+import { Info } from '../../../packages/core/@cqs/types';
+import { SuccessResponse } from '../../../packages/core/api/ApiResponse';
 
 export class Hello {
   @MinLength(3)
@@ -16,5 +16,5 @@ export interface GetHelloResult {
 }
 
 export interface HelloQuery {
-  getHello(args: GetHelloArgs, ctx: Context, info: Info): SuccessResponse<GetHelloResult>;
+  getHello(args: GetHelloArgs, ctx: Context, info: Info): Promise<SuccessResponse<{ some: any }>>;
 }

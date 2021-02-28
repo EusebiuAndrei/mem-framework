@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Logger from '../core/Logger';
+import Logger from '../packages/core/Logger';
 import config from '../config/index';
 
 Logger.debug(config.mongo.dbUri);

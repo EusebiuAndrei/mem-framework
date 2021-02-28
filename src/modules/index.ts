@@ -1,10 +1,7 @@
-import QueryHandler from '../core/@cqs/QueryHandler';
-import MutationHandler from '../core/@cqs/MutationHandler';
-
 // modules
 import hello from './hello';
+import BaseController from '../packages/core/@cqs/BaseController';
 
-const queries: QueryHandler[] = [...hello.queries];
-const mutations: MutationHandler[] = [...hello.mutations];
+const controllers: BaseController[] = [...hello.controllers];
 
-export default { queries, mutations };
+export default { controllers };
