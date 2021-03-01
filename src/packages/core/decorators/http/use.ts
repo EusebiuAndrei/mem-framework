@@ -1,4 +1,4 @@
-import { ControllerMetadata, HttpMethod, RouteMetadata } from '../../types';
+import { ControllerMetadata, RouteMetadata } from '../../types';
 import { CONTROLLER_METADATA_KEY, ROUTE_METADATA_KEY } from './constants';
 
 type Constructor = { new (...args: any[]): {} };
@@ -8,60 +8,41 @@ type MethodDecoratorParams = {
   descriptor: PropertyDescriptor;
 };
 
-export const UseUniversal = (...middlewares: Function[]) =>
-  function (props: Constructor | MethodDecoratorParams): void {
-    if ('target' in props) {
-      // Method decorator
-      const { target, propertyKey, descriptor } = props;
-      const routeMeta: RouteMetadata = Reflect.getMetadata(ROUTE_METADATA_KEY, target, propertyKey);
-
-      const newRouteMeta = {
-        ...routeMeta,
-        middlewares,
-      };
-
-      Reflect.defineMetadata(ROUTE_METADATA_KEY, newRouteMeta, target, propertyKey);
+export const Use = (...middlewares: Function[]) =>
+  function (...props: any): void {
+    if (props.length === 1) {
+      const [constructor] = props;
+      useMiddlewareConstructor(middlewares, constructor);
     } else {
-      // Class decorator
-      const contructor = props;
-      const controllerMeta: ControllerMetadata = Reflect.getMetadata(
-        CONTROLLER_METADATA_KEY,
-        contructor,
-      );
-
-      const newControllerMeta = {
-        ...controllerMeta,
-        middlewares,
-      };
-
-      Reflect.defineMetadata(CONTROLLER_METADATA_KEY, newControllerMeta, contructor);
+      const [target, propertyKey, descriptor] = props;
+      useMiddlewareRoute(middlewares, { target, propertyKey, descriptor });
     }
   };
 
-export const Use = (...middlewares: Function[]) =>
-  function (contructor: Constructor): void {
-    const controllerMeta: ControllerMetadata = Reflect.getMetadata(
-      CONTROLLER_METADATA_KEY,
-      contructor,
-    );
+function useMiddlewareConstructor(middlewares: Function[], contructor: Constructor): void {
+  const controllerMeta: ControllerMetadata = Reflect.getMetadata(
+    CONTROLLER_METADATA_KEY,
+    contructor,
+  );
 
-    const newControllerMeta = {
-      ...controllerMeta,
-      middlewares,
-    };
-
-    Reflect.defineMetadata(CONTROLLER_METADATA_KEY, newControllerMeta, contructor);
+  const newControllerMeta = {
+    ...controllerMeta,
+    middlewares,
   };
 
-export const UseR = (...middlewares: Function[]): MethodDecorator =>
-  function (props: MethodDecoratorParams) {
-    const { target, propertyKey, descriptor } = props;
-    const routeMeta: RouteMetadata = Reflect.getMetadata(ROUTE_METADATA_KEY, target, propertyKey);
+  Reflect.defineMetadata(CONTROLLER_METADATA_KEY, newControllerMeta, contructor);
+}
 
-    const newRouteMeta = {
-      ...routeMeta,
-      middlewares,
-    };
+function useMiddlewareRoute(
+  middlewares: Function[],
+  { target, propertyKey, descriptor }: MethodDecoratorParams,
+): void {
+  const routeMeta: RouteMetadata = Reflect.getMetadata(ROUTE_METADATA_KEY, target, propertyKey);
 
-    Reflect.defineMetadata(ROUTE_METADATA_KEY, newRouteMeta, target, propertyKey);
+  const newRouteMeta = {
+    ...routeMeta,
+    middlewares,
   };
+
+  Reflect.defineMetadata(ROUTE_METADATA_KEY, newRouteMeta, target, propertyKey);
+}

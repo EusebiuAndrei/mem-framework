@@ -44,8 +44,6 @@ class CQServer<TContext> {
 
         if (isDecoratedWithRoute(controller, propertyKey)) {
           const routeMeta = getRouteMetadata(controller, propertyKey);
-          console.log('Controller', controllerMeta.middlewares);
-          console.log('Route', routeMeta.middlewares);
           const middlewares = [
             ...(controllerMeta.middlewares ?? ([] as any[])),
             ...(routeMeta.middlewares ?? ([] as any[])),

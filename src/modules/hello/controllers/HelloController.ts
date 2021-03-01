@@ -1,4 +1,4 @@
-import { Controller, Get, Use, UseR, UseUniversal } from '../../../packages/core/decorators';
+import { Controller, Get, Use } from '../../../packages/core/decorators';
 import { SuccessResponse } from '../../../packages/core/api/ApiResponse';
 import bodyParser from 'body-parser';
 import { GetHelloQuery } from '../queries/GetHelloQuery';
@@ -13,13 +13,13 @@ const tryMiddleware = (req: Request, res: Response, next: NextFunction) => {
 };
 
 @injectable()
-@UseUniversal(tryMiddleware)
+@Use(tryMiddleware)
 @Controller('hello')
 class HelloController {
   @inject(MemMediator) private _mediator: MemMediator;
 
   @Get()
-  @UseR(tryMiddleware)
+  @Use(tryMiddleware)
   public async getHello(req: Request, res: Response): Promise<SuccessResponse<any>> {
     const result = await this._mediator.emitAction(new GetHelloQuery(1));
     return new SuccessResponse('success', result);
