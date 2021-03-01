@@ -99,7 +99,7 @@ Following are the features of this project:
  ## Project Directory Structure
  ```
 ├── src
-│   ├── server.ts
+│   ├── Server.ts
 │   ├── app.ts
 │   ├── config.ts
 │   ├── auth
@@ -211,7 +211,7 @@ Following are the features of this project:
  ```
  
  ## Directory Traversal for Signup API call
- `/src → server.ts → app.ts → /routes/v1/index.ts → /auth/apikey.ts → schema.ts → /helpers/validator.ts → asyncHandler.ts → /routes/v1/signup.ts → schema.ts → /helpers/validator.ts → asyncHandler.ts → /database/repository/UserRepo.ts → /database/model/User.ts → /core/ApiResponses.ts`
+ `/src → Server.ts → app.ts → /routes/v1/index.ts → /auth/apikey.ts → schema.ts → /helpers/validator.ts → asyncHandler.ts → /routes/v1/signup.ts → schema.ts → /helpers/validator.ts → asyncHandler.ts → /database/repository/UserRepo.ts → /database/model/User.ts → /core/ApiResponses.ts`
  
  ## API Examples
 * Signup

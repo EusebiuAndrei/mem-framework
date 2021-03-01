@@ -3,16 +3,18 @@ import path from 'path';
 import getModules from '../helpers/getModules';
 
 class ControllersProfiler {
-  public static async profile(container: Container): Promise<void> {
+  public static async profile(container: Container): Promise<any[]> {
     const modulesDirPath = path.join(__dirname, '..', '..', '..', 'modules');
     const modules = await getModules(modulesDirPath, ControllersProfiler.check);
 
-    const handlers = [];
+    const controllers = [];
     for (const module of modules) {
       const { default: Controller } = await import(module.path);
       container.bind<typeof Controller>(Controller).toSelf();
-      handlers.push(container.get(Controller));
+      controllers.push(container.get(Controller));
     }
+
+    return controllers;
   }
 
   private static check(fileName: string) {

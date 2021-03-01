@@ -1,9 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import Logger from '../Logger';
 import { port } from '../../../config';
-import MiddlewareHandler from './MiddlewareHandler';
 import ErrorHandler from './ErrorHandler';
-import { ACIFactory } from './types';
 import {
   getControllerMetadata,
   getRouteMetadata,
@@ -12,17 +10,14 @@ import {
 } from '../decorators';
 import asyncHandler from '../helpers/asyncHandler';
 
-export interface CQServerProps<TContext> {
-  controllers: any[];
-}
+abstract class ExpressServer {
+  abstract async useMiddlewares(app: Express): Promise<void>;
 
-class CQServer<TContext> {
-  readonly app: Express = express();
-  readonly factory: ACIFactory<TContext>;
-  readonly controllers: any[];
+  private readonly app: Express = express();
+  private readonly controllers: any[];
 
-  constructor(props: CQServerProps<TContext>) {
-    this.controllers = props.controllers;
+  protected constructor(controllers: any[]) {
+    this.controllers = controllers;
   }
 
   async handleControllers() {
@@ -63,10 +58,11 @@ class CQServer<TContext> {
   }
 
   async run() {
-    const middlewareHandler = new MiddlewareHandler(this.app);
+    // const middlewareHandler = new MiddlewareHandler(this.app);
     const errorHandler = new ErrorHandler(this.app);
 
-    await middlewareHandler.useConfigMiddlewares();
+    // await middlewareHandler.useConfigMiddlewares();
+    await this.useMiddlewares(this.app);
     await this.handleControllers();
     await errorHandler.handleErrors();
   }
@@ -76,9 +72,10 @@ class CQServer<TContext> {
     this.app
       .listen(port, () => {
         Logger.info(`server running on port : ${port}`);
+        console.log(`server running on port : ${port}`);
       })
       .on('error', (e) => Logger.error(e));
   }
 }
 
-export default CQServer;
+export default ExpressServer;

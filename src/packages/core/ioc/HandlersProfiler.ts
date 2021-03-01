@@ -5,7 +5,7 @@ import { MemMediator } from '../../mem-events';
 import getModules from '../helpers/getModules';
 
 class HandlersProfiler {
-  public static async profile(container: Container): Promise<void> {
+  public static async profile(container: Container): Promise<any[]> {
     const modulesDirPath = path.join(__dirname, '..', '..', '..', 'modules');
     const modules = await getModules(modulesDirPath, HandlersProfiler.check);
 
@@ -17,6 +17,8 @@ class HandlersProfiler {
     }
 
     HandlersProfiler.registerHandlers(container, handlers);
+
+    return handlers;
   }
 
   private static check(fileName: string) {

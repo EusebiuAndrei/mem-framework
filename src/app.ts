@@ -11,8 +11,8 @@
 // import { SuccessResponse } from './core/ApiResponse';
 // import validator, { ValidationSource } from './helpers/validator';
 // import schema from './routes/v1/profile/schema';
-// import decorateWithCQS from './core/@cqs/decorateWithCQS';
-// import { CQS } from './core/@cqs/cqs';
+// import decorateWithCQS from './core/express/decorateWithCQS';
+// import { CQS } from './core/express/cqs';
 
 // export const app = express();
 
