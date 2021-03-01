@@ -1,12 +1,12 @@
-import { Controller, Get, Use } from '../../../packages/core/decorators';
-import { SuccessResponse } from '../../../packages/core/api/ApiResponse';
+import { Controller, Get, Use } from '../packages/core/decorators';
+import { SuccessResponse } from '../packages/core/api/ApiResponse';
 import bodyParser from 'body-parser';
-import { GetHelloQuery } from '../queries/GetHelloQuery';
-import { CreateHelloCommand } from '../commands/CreateHelloCommand';
-import { NextFunction, Request, Response } from 'express';
+import { GetHelloQuery } from '../modules/hello/queries/GetHelloQuery';
+import { CreateHelloCommand } from '../modules/hello/commands/CreateHelloCommand';
+import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-import { MemMediator } from '../../../packages/mem-events';
-import { tryMiddleware } from '../../../middlewares';
+import { MemMediator } from '../packages/mem-events';
+import { tryMiddleware } from '../middlewares';
 
 @injectable()
 @Use(tryMiddleware)

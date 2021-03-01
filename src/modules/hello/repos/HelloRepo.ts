@@ -1,3 +1,10 @@
-class UserRepo {}
+import { injectable } from 'inversify';
 
-export default UserRepo;
+@injectable()
+class HelloRepo {
+  public async find(): Promise<string[]> {
+    return ['hello', 'hi'];
+  }
+}
+
+export default HelloRepo;

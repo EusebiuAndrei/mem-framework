@@ -1,9 +1,20 @@
 import { BaseLauncher } from './packages/core/ioc';
-import SomeService from './modules/SomeService';
+import Server from './Server';
+import HelloIocProfiler from './modules/hello/IocProfiler';
 
 class Launcher extends BaseLauncher {
   public async profile(): Promise<void> {
-    this._container.bind<SomeService>(SomeService).to(SomeService);
+    await HelloIocProfiler.profile(this._container);
+  }
+
+  public async onEnd(): Promise<void> {
+    this._container.bind<Server>(Server).toDynamicValue(() => new Server(this._controllers));
+  }
+
+  public static async start(): Promise<void> {
+    const launcher = new Launcher();
+    await launcher.launch();
+    await launcher._container.get<Server>(Server).listen();
   }
 }
 

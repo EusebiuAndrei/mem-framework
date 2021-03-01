@@ -1,13 +1,13 @@
-import { QueryHandler, Query, Handler } from '../../../packages/mem-events';
+import { Handler, CommandHandler, Command } from '../../../packages/mem-events';
 import { injectable } from 'inversify';
 
-@Query()
+@Command()
 export class CreateHelloCommand {
   constructor(public readonly type: number) {}
 }
 
-@QueryHandler(CreateHelloCommand)
 @injectable()
+@CommandHandler(CreateHelloCommand)
 class CreateHelloCommandHandler implements Handler<CreateHelloCommand, any> {
   async handle(command: CreateHelloCommand) {
     console.log('Query Callback inside');

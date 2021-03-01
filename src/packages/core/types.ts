@@ -1,10 +1,4 @@
-import { Request, Response } from 'express';
-
-export type HTTPMethod = 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
-export type CQMethod = (req: Request, res: Response) => any;
-
 // Brand new
-
 export enum HttpMethod {
   GET = 'get',
   POST = 'post',

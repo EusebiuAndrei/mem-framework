@@ -4,7 +4,7 @@ import getModules from '../helpers/getModules';
 
 class ControllersProfiler {
   public static async profile(container: Container): Promise<any[]> {
-    const modulesDirPath = path.join(__dirname, '..', '..', '..', 'modules');
+    const modulesDirPath = path.join(__dirname, '..', '..', '..', 'controllers');
     const modules = await getModules(modulesDirPath, ControllersProfiler.check);
 
     const controllers = [];

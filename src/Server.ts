@@ -6,7 +6,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import { corsUrl } from './config';
+import { injectable } from 'inversify';
 
+@injectable()
 class Server extends ExpressServer {
   constructor(controller: any[]) {
     super(controller);

@@ -1,8 +1,8 @@
-import { QueryHandler, Query, Handler, MemMediator } from '../../../packages/mem-events';
+import { QueryHandler, Query, Handler } from '../../../packages/mem-events';
 import { hooks } from '@feathersjs/hooks';
 import { niceHook } from '../hooks';
 import { inject, injectable } from 'inversify';
-import SomeService from '../../SomeService';
+import { HelloRepo } from '../repos';
 
 @Query()
 export class GetHelloQuery {
@@ -12,13 +12,15 @@ export class GetHelloQuery {
 @injectable()
 @QueryHandler(GetHelloQuery)
 class GetHelloQueryHandler implements Handler<GetHelloQuery, any> {
-  @inject(SomeService) private _someService: SomeService;
+  @inject(HelloRepo) private _helloRepo: HelloRepo;
 
   @hooks([niceHook])
   async handle(query: GetHelloQuery) {
     console.log('Query Callback inside');
     console.log(query);
-    return query;
+
+    const result = await this._helloRepo.find();
+    return result;
   }
 }
 

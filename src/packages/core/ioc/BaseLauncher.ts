@@ -4,9 +4,9 @@ import { ControllersProfiler, HandlersProfiler, MemEventsProfiler } from './inde
 abstract class BaseLauncher {
   public abstract async profile(): Promise<void>;
 
-  public _container = new Container();
-  public _handlers: any[] = [];
-  public _controllers: any[] = [];
+  protected _container = new Container();
+  protected _handlers: any[] = [];
+  protected _controllers: any[] = [];
 
   async launch() {
     await this.onStart();
