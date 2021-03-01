@@ -1,19 +1,25 @@
-import { Controller, Get } from '../../../packages/core/decorators';
+import { Controller, Get, Use, UseR, UseUniversal } from '../../../packages/core/decorators';
 import { SuccessResponse } from '../../../packages/core/api/ApiResponse';
 import bodyParser from 'body-parser';
 import { GetHelloQuery } from '../queries/GetHelloQuery';
 import { CreateHelloCommand } from '../commands/CreateHelloCommand';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { MemMediator } from '../../../packages/mem-events';
 
+const tryMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  console.log('TRY Middleware');
+  return next();
+};
+
 @injectable()
+@UseUniversal(tryMiddleware)
 @Controller('hello')
 class HelloController {
   @inject(MemMediator) private _mediator: MemMediator;
 
   @Get()
-  // @schema(GetHelloArgs)
+  @UseR(tryMiddleware)
   public async getHello(req: Request, res: Response): Promise<SuccessResponse<any>> {
     const result = await this._mediator.emitAction(new GetHelloQuery(1));
     return new SuccessResponse('success', result);

@@ -27,7 +27,10 @@ export const All = (path?: string) => Route(HttpMethod.ALL, path);
 export const Head = (path?: string) => Route(HttpMethod.HEAD, path);
 export const Options = (path?: string) => Route(HttpMethod.OPTIONS, path);
 
-export const getRouteMetadata = (object: Record<string, any>, propertyKey: string): RouteMetadata => {
+export const getRouteMetadata = (
+  object: Record<string, any>,
+  propertyKey: string,
+): RouteMetadata => {
   return Reflect.getMetadata(ROUTE_METADATA_KEY, object, propertyKey);
 };
 
