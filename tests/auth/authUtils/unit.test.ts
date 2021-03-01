@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './mock';
 import { validateTokenData, createTokens } from '../../../src/auth/authUtils';
-import { JwtPayload } from '../../../src/packages/core/JWT';
+import { JwtPayload } from '../../../src/auth/JWT';
 import { tokenInfo } from '../../../src/config';
 import { Types } from 'mongoose';
 import { AuthFailureError } from '../../../src/packages/core/api/ApiError';

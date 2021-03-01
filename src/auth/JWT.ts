@@ -2,8 +2,8 @@ import path from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 import { sign, verify } from 'jsonwebtoken';
-import { InternalError, BadTokenError, TokenExpiredError } from './api/ApiError';
-import Logger from './Logger';
+import { InternalError, BadTokenError, TokenExpiredError } from '../packages/core/api/ApiError';
+import Logger from '../packages/core/Logger';
 
 /*
  * issuer 		— Software organization who issues the token.

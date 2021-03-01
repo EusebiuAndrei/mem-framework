@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 import User from '../../../src/database/model/User';
 import Role, { RoleCode } from '../../../src/database/model/Role';
 import { BadTokenError } from '../../../src/packages/core/api/ApiError';
-import JWT, { JwtPayload } from '../../../src/packages/core/JWT';
+import JWT, { JwtPayload } from '../../../src/auth/JWT';
 import { tokenInfo } from '../../../src/config';
 
 export const LEARNER_ROLE_ID = new Types.ObjectId(); // random id

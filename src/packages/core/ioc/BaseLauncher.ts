@@ -1,5 +1,5 @@
 import { Container } from 'inversify';
-import { ControllersProfiler, HandlersProfiler, MemEventsProfiler } from './ioc';
+import { ControllersProfiler, HandlersProfiler, MemEventsProfiler } from './index';
 
 abstract class BaseLauncher {
   public _container = new Container();

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import CQServer from './packages/core/@cqs/CQServer';
 import { TContext } from './types';
 import { GetHelloQuery } from './modules/hello/queries/GetHelloQuery';
-import BaseLauncher from './packages/core/BaseLauncher';
+import { BaseLauncher } from './packages/core/ioc';
 import SomeService from './modules/SomeService';
 import HelloController from './modules/hello/controllers/HelloController';
 import { MemMediator } from './packages/mem-events';

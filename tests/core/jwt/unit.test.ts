@@ -1,5 +1,5 @@
 import { readFileSpy } from './mock';
-import JWT, { JwtPayload } from '../../../src/packages/core/JWT';
+import JWT, { JwtPayload } from '../../../src/auth/JWT';
 import { BadTokenError, TokenExpiredError } from '../../../src/packages/core/api/ApiError';
 
 describe('JWT class tests', () => {
