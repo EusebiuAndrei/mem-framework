@@ -1,7 +1,8 @@
 import { delay } from './utils';
-import { QueryHandler, Query, EventHandler, Handler, getEventMetadata } from './decorators';
+import { QueryHandler, Query, EventHandler, getEventMetadata } from './decorators';
 import MemRegistry from './MemRegistry';
 import { HookContext, hooks, NextFunction } from '@feathersjs/hooks';
+import { Handler } from './types';
 
 @Query()
 export class CoolQuery {

@@ -18,6 +18,10 @@ export interface Mediator {
   send(event: any): Promise<void>;
 }
 
+export interface Handler<TEvent, TResult> {
+  handle(event: TEvent): Promise<TResult>;
+}
+
 // Decorators metadata types
 export interface EventMetadata {
   name: string;

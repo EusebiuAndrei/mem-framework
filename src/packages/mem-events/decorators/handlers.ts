@@ -1,9 +1,5 @@
 import { EventType } from '../types';
 
-export interface Handler<TEvent, TResult> {
-  handle(event: TEvent): Promise<TResult>;
-}
-
 const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]): {} }) => {
   const EventClassMeta = Reflect.get(EventClass.prototype, 'meta');
 
