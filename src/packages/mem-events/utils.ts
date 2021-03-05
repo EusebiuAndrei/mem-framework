@@ -1,6 +1,6 @@
 import MemEventEmitter from './MemEventEmitter';
 import MemMediator from './MemMediator';
-import EventType from './EventType';
+import { EventType } from './types';
 import EventEmitter = NodeJS.EventEmitter;
 
 export function delay(ms: number) {
@@ -17,7 +17,11 @@ export function createMem() {
   };
 }
 
-export function registerHandlers(eventEmitter: EventEmitter, mediator: MemMediator, handlers: any[]) {
+export function registerHandlers(
+  eventEmitter: EventEmitter,
+  mediator: MemMediator,
+  handlers: any[],
+) {
   handlers.forEach((handler) => {
     const meta = Reflect.get(handler, 'meta');
     const callback = handler.handle.bind(handler);
@@ -27,5 +31,5 @@ export function registerHandlers(eventEmitter: EventEmitter, mediator: MemMediat
     } else {
       mediator.on(meta.event.name, callback);
     }
-  })
+  });
 }

@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { Emitter, EventCallback } from './types';
 
 interface EventEmitterOptions {
   /**
@@ -7,7 +8,7 @@ interface EventEmitterOptions {
   captureRejections?: boolean;
 }
 
-class MemEventEmitter extends EventEmitter {
+class MemEventEmitter extends EventEmitter implements Emitter {
   private static instance: MemEventEmitter = null;
 
   private constructor(options?: EventEmitterOptions) {
@@ -19,6 +20,17 @@ class MemEventEmitter extends EventEmitter {
       this.instance = new MemEventEmitter(options);
     }
     return this.instance;
+  }
+
+  // @ts-ignore
+  public on(eventName: string, callback: EventCallback) {
+    super.on(eventName, callback);
+  }
+
+  // @ts-ignore
+  public emit(event: any) {
+    const meta = Reflect.get(event, 'meta');
+    return super.emit(meta.name, event);
   }
 }
 

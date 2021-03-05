@@ -1,83 +1,60 @@
-import EventEmitter = NodeJS.EventEmitter;
-
-type Callback = (...args: any) => Promise<any>;
+import { Emitter, EventCallback, Mediator } from './types';
+import { NoListenerError, OneListenerAcceptedError } from './exceptions';
 
 // 1 Event <-> 1 Listener ( Query | Command )
-class MemMediator {
+class MemMediator implements Mediator {
   private static instance: MemMediator = null;
-  private eventEmitter: EventEmitter;
-  private listeners: Map<string, Callback> = new Map<string, Callback>();
+  private eventEmitter: Emitter;
+  private listeners: Map<string, EventCallback> = new Map<string, EventCallback>();
 
-  private constructor(eventEmitter: EventEmitter) {
+  private constructor(eventEmitter: Emitter) {
     this.eventEmitter = eventEmitter;
   }
 
-  public static create(eventEmitter: EventEmitter): MemMediator {
+  public static create(eventEmitter: Emitter): MemMediator {
     if (!this.instance) {
       this.instance = new MemMediator(eventEmitter);
     }
     return this.instance;
   }
 
-  // Register a handler for this event
-  public on(eventName: string, callback: Callback) {
+  // Register a handler for this event (query | command)
+  public on(eventName: string, callback: EventCallback) {
     const listenerExists = this.listeners.has(eventName);
 
     if (listenerExists) {
-      throw new Error('Just one listener accepted');
+      throw new OneListenerAcceptedError();
     }
 
     this.listeners.set(eventName, callback);
   }
 
-  // Send
-  public async sendAction(event: any) {
-    const meta = Reflect.get(event, 'meta');
-    const listener = this.listeners.get(meta.name);
-
-    if (!listener) {
-      throw new Error(`There is not any listener for: ${meta.name}`);
-    }
-
-    return await listener(event);
-  }
-
-  public async emitAction(event: any) {
-    const meta = Reflect.get(event, 'meta');
-    const listener = this.listeners.get(meta.name);
-
-    if (!listener) {
-      throw new Error(`There is not any listener for: ${meta.name}`);
-    }
-
-    this.eventEmitter.emit(meta.name, event);
-    return await listener(event);
-  }
-
   // Send this event
   // Receive a response from the handler
-  public async send(eventName: string, ...args: any) {
-    const listener = this.listeners.get(eventName);
+  public async send(event: any) {
+    const meta = Reflect.get(event, 'meta');
+    const listener = this.listeners.get(meta.name);
 
     if (!listener) {
-      throw new Error(`There is not any listener for: ${eventName}`);
+      throw new NoListenerError(meta);
     }
 
-    return await listener(args);
+    return await listener(event);
   }
 
   // Send this event
   // Emit this event forward
   // Receive a response from the handler
-  public async emit(eventName: string, ...args: any) {
-    const listener = this.listeners.get(eventName);
+  public async emit(event: any) {
+    const meta = Reflect.get(event, 'meta');
+    const listener = this.listeners.get(meta.name);
 
     if (!listener) {
-      throw new Error(`There is not any listener for: ${eventName}`);
+      throw new NoListenerError(meta);
     }
 
-    this.eventEmitter.emit(eventName, args);
-    return await listener(args);
+    this.eventEmitter.emit(event);
+    return await listener(event);
   }
 }
 

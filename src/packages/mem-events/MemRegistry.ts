@@ -1,4 +1,4 @@
-import EventType from './EventType';
+import { EventType } from './types';
 import MemEventEmitter from './MemEventEmitter';
 import MemMediator from './MemMediator';
 
@@ -12,7 +12,7 @@ class MemRegistry {
 
   private static register(handler: any) {
     const meta = Reflect.get(handler, 'meta');
-    if (meta.scope === EventType.EVENT) {
+    if (meta.kind === EventType.EVENT) {
       MemRegistry.memEventEmitter.on(meta.event.name, handler.handle);
     } else {
       MemRegistry.memMediator.on(meta.event.name, handler.handle);

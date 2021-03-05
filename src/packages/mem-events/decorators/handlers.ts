@@ -1,20 +1,20 @@
-import EventType from '../EventType';
+import { EventType } from '../types';
 
 export interface Handler<TEvent, TResult> {
   handle(event: TEvent): Promise<TResult>;
 }
 
-const BaseHandler = (handlerScope: EventType, EventClass: { new (...args: any[]): {} }) => {
+const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]): {} }) => {
   const EventClassMeta = Reflect.get(EventClass.prototype, 'meta');
 
-  switch (handlerScope) {
+  switch (handlerKind) {
     case EventType.QUERY:
-      if (EventClassMeta.scope !== EventType.QUERY) {
+      if (EventClassMeta.kind !== EventType.QUERY) {
         throw new Error('QueryHandler can only handle Queries');
       }
       break;
     case EventType.COMMAND:
-      if (EventClassMeta.scope !== EventType.COMMAND) {
+      if (EventClassMeta.kind !== EventType.COMMAND) {
         throw new Error('CommandHandler can only handle Commands');
       }
       break;
@@ -27,7 +27,7 @@ const BaseHandler = (handlerScope: EventType, EventClass: { new (...args: any[])
   return function <T extends { new (...args: any[]): {} }>(contructor: T): T {
     contructor.prototype.meta = {
       event: EventClassMeta,
-      scope: handlerScope,
+      kind: handlerKind,
     };
     return contructor;
     // return class extends contructor {

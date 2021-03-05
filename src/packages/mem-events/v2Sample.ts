@@ -1,5 +1,5 @@
 import { delay } from './utils';
-import { QueryHandler, Query, EventHandler, Handler } from './decorators';
+import { QueryHandler, Query, EventHandler, Handler, getEventMetadata } from './decorators';
 import MemRegistry from './MemRegistry';
 import { HookContext, hooks, NextFunction } from '@feathersjs/hooks';
 
@@ -33,6 +33,10 @@ class CoolQueryEventHandler implements Handler<CoolQuery, string> {
   }
 }
 
+const some = new CoolQueryEventHandler();
+const lala = getEventMetadata(some);
+console.log('META', lala);
+
 MemRegistry.create(
   new CoolQueryEventHandler(),
   new CoolQueryHandler(),
@@ -40,7 +44,7 @@ MemRegistry.create(
 );
 
 const main = async () => {
-  const result = await MemRegistry.memMediator.emitAction(new CoolQuery(23));
+  const result = await MemRegistry.memMediator.emit(new CoolQuery(23));
   console.log('RESULT', result);
 };
 
