@@ -3,6 +3,7 @@ import { QueryHandler, Query, EventHandler, getEventMetadata } from './decorator
 import MemRegistry from './MemRegistry';
 import { HookContext, hooks, NextFunction } from '@feathersjs/hooks';
 import { Handler } from './types';
+import { GetHelloQuery } from '../../modules/hello/queries/GetHelloQuery';
 
 @Query()
 export class CoolQuery {
@@ -33,10 +34,6 @@ class CoolQueryEventHandler implements Handler<CoolQuery, string> {
     return 'event';
   }
 }
-
-const some = new CoolQueryEventHandler();
-const lala = getEventMetadata(some);
-console.log('META', lala);
 
 MemRegistry.create(
   new CoolQueryEventHandler(),

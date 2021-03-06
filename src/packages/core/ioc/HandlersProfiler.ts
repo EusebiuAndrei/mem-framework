@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import path from 'path';
-import { EventType } from '../../mem-events';
+import { EventType, getHandlerMetadata } from '../../mem-events';
 import { MemMediator } from '../../mem-events';
 import getModules from '../helpers/getModules';
 
@@ -32,10 +32,10 @@ class HandlersProfiler {
 
   private static registerHandlers(container: Container, handlers: any[]) {
     handlers.forEach((handler) => {
-      const meta = Reflect.get(handler, 'meta');
+      const meta = getHandlerMetadata(handler);
       const callback = handler.handle.bind(handler);
 
-      if (meta.scope === EventType.EVENT) {
+      if (meta.kind === EventType.EVENT) {
         (container.get('ee') as any).on(meta.event.name, callback);
       } else {
         (container.get(MemMediator) as any).on(meta.event.name, callback);

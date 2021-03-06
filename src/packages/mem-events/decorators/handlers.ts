@@ -1,16 +1,17 @@
-import { EventType } from '../types';
+import { EventMetadata, EventType, HandlerMetadata } from '../types';
+import { EVENT_METADATA_KEY, HANDLER_METADATA_KEY } from './constants';
 
 const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]): {} }) => {
-  const EventClassMeta = Reflect.get(EventClass.prototype, 'meta');
+  const eventMeta = Reflect.getMetadata(EVENT_METADATA_KEY, EventClass) as EventMetadata;
 
   switch (handlerKind) {
     case EventType.QUERY:
-      if (EventClassMeta.kind !== EventType.QUERY) {
+      if (eventMeta.kind !== EventType.QUERY) {
         throw new Error('QueryHandler can only handle Queries');
       }
       break;
     case EventType.COMMAND:
-      if (EventClassMeta.kind !== EventType.COMMAND) {
+      if (eventMeta.kind !== EventType.COMMAND) {
         throw new Error('CommandHandler can only handle Commands');
       }
       break;
@@ -21,17 +22,14 @@ const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]):
   }
 
   return function <T extends { new (...args: any[]): {} }>(contructor: T): T {
-    contructor.prototype.meta = {
-      event: EventClassMeta,
+    const handlerMeta: HandlerMetadata = {
       kind: handlerKind,
+      event: eventMeta,
     };
+
+    Reflect.defineMetadata(HANDLER_METADATA_KEY, handlerMeta, contructor);
+
     return contructor;
-    // return class extends contructor {
-    //   meta = {
-    //     event: EventClassMeta,
-    //     scope: handlerScope,
-    //   };
-    // };
   };
 };
 
@@ -43,3 +41,14 @@ export const CommandHandler = (EventClass: { new (...args: any[]): {} }) =>
 
 export const EventHandler = (EventClass: { new (...args: any[]): {} }) =>
   BaseHandler(EventType.EVENT, EventClass);
+
+export const getHandlerMetadata = (object: Record<string, any>) => {
+  const constructor = Reflect.getPrototypeOf(object).constructor;
+  const meta: HandlerMetadata = Reflect.getMetadata(HANDLER_METADATA_KEY, constructor);
+  return meta;
+};
+
+export const hasHandlerMetadata = (object: Record<string, any>): boolean => {
+  const constructor = Reflect.getPrototypeOf(object).constructor;
+  return Reflect.hasMetadata(HANDLER_METADATA_KEY, constructor);
+};

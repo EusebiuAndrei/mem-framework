@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { EventMetadata, EventType } from '../types';
+import { EventInstanceMetadata, EventMetadata, EventType } from '../types';
 import { EVENT_METADATA_KEY } from './constants';
 
 const BaseEvent = (eventKind: EventType, name?: string) =>
@@ -10,22 +10,36 @@ const BaseEvent = (eventKind: EventType, name?: string) =>
     };
 
     Reflect.defineMetadata(EVENT_METADATA_KEY, eventMeta, constructor);
-    constructor.prototype.meta = eventMeta;
-
-    const lala = Reflect.getMetadata(EVENT_METADATA_KEY, constructor);
-    console.log('LALA', lala);
 
     return class extends constructor {
-      meta = {
-        ...constructor.prototype.meta,
-        timestamp: new Date(),
-      };
+      constructor(...args: any[]) {
+        super(args);
+
+        const meta = getEventMetadata(this);
+        const eventMeta: EventInstanceMetadata = {
+          ...meta,
+          timestamp: new Date(),
+        };
+
+        Reflect.defineMetadata(EVENT_METADATA_KEY, eventMeta, constructor);
+      }
     };
   };
 
 export const Query = (name?: string) => BaseEvent(EventType.QUERY, name);
 export const Command = (name?: string) => BaseEvent(EventType.COMMAND, name);
 export const Event = (name?: string) => BaseEvent(EventType.EVENT, name);
+
+export const getEventMetadata = (object: Record<string, any>) => {
+  const constructor = Reflect.getPrototypeOf(object).constructor;
+  const meta: EventInstanceMetadata = Reflect.getMetadata(EVENT_METADATA_KEY, constructor);
+  return meta;
+};
+
+export const hasEventMetadata = (object: Record<string, any>): boolean => {
+  const constructor = Reflect.getPrototypeOf(object).constructor;
+  return Reflect.hasMetadata(EVENT_METADATA_KEY, constructor);
+};
 
 const extractNameFromConstructor = (target: Function, eventType: EventType) => {
   let name = target.prototype.constructor.name;
@@ -35,15 +49,4 @@ const extractNameFromConstructor = (target: Function, eventType: EventType) => {
   }
 
   return name;
-};
-
-export const getEventMetadata = (object: Record<string, any>) => {
-  const constructor = Reflect.getPrototypeOf(object).constructor;
-  const meta: EventMetadata = Reflect.getMetadata(EVENT_METADATA_KEY, constructor);
-  return meta;
-};
-
-export const hasEventMetadata = (object: Record<string, any>): boolean => {
-  const constructor = Reflect.getPrototypeOf(object).constructor;
-  return Reflect.hasMetadata(EVENT_METADATA_KEY, constructor);
 };

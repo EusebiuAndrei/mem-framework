@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import { Emitter, EventCallback } from './types';
+import { getEventMetadata } from './decorators';
 
 interface EventEmitterOptions {
   /**
@@ -29,7 +30,7 @@ class MemEventEmitter extends EventEmitter implements Emitter {
 
   // @ts-ignore
   public emit(event: any) {
-    const meta = Reflect.get(event, 'meta');
+    const meta = getEventMetadata(event);
     return super.emit(meta.name, event);
   }
 }
