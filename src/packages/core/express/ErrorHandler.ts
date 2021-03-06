@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import { NotFoundError, ApiError, InternalError } from '../api/ApiError';
+import { NotFoundError, ApiError, InternalError } from '../exceptions';
 import Logger from '../Logger';
 import { environment } from '../../../config';
 

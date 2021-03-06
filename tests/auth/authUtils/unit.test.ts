@@ -3,7 +3,7 @@ import { validateTokenData, createTokens } from '../../../src/auth/authUtils';
 import { JwtPayload } from '../../../src/auth/JWT';
 import { tokenInfo } from '../../../src/config';
 import { Types } from 'mongoose';
-import { AuthFailureError } from '../../../src/packages/core/api/ApiError';
+import { AuthFailureError } from '../../../src/packages/core/exceptions/api/ApiError';
 import User from '../../../src/database/model/User';
 
 describe('authUtils validateTokenData tests', () => {

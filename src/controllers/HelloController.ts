@@ -1,5 +1,5 @@
 import { Controller, Get, Use } from '../packages/core/decorators';
-import { SuccessResponse } from '../packages/core/api/ApiResponse';
+import { SuccessResponse } from '../packages/core/exceptions/api/ApiResponse';
 import bodyParser from 'body-parser';
 import { GetHelloQuery } from '../modules/hello/queries/GetHelloQuery';
 import { CreateHelloCommand } from '../modules/hello/commands/CreateHelloCommand';

@@ -4,7 +4,7 @@ import { HookContext, hooks, NextFunction } from '@feathersjs/hooks';
 import { Handler } from './types';
 
 @Query()
-export class CoolQuery {
+class CoolQuery {
   constructor(public readonly avg: number) {}
 }
 
