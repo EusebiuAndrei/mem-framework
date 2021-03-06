@@ -70,3 +70,6 @@
 //     if (!value.split(' ')[1]) return helpers.error('any.invalid');
 //     return value;
 //   }, 'Authorization Header Validation');
+
+const a = () => '';
+export default a;

@@ -1,8 +1,7 @@
 import { Container } from 'inversify';
 import path from 'path';
-import { EventType, registerHandlers } from '../../mem-events';
-import { MemMediator } from '../../mem-events';
-import getModules from '../helpers/getModules';
+import { EventType, MemMediator, registerHandlers } from '../../mem-events';
+import { getModules } from '../helpers';
 
 class HandlersProfiler {
   public static async profile(container: Container): Promise<any[]> {

@@ -8,7 +8,7 @@ import {
   isDecoratedWithController,
   isDecoratedWithRoute,
 } from '../decorators';
-import asyncHandler from '../helpers/asyncHandler';
+import { asyncHandler } from '../helpers';
 
 abstract class ExpressServer {
   abstract async useMiddlewares(app: Express): Promise<void>;

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ApiResponse } from '../exceptions/api/ApiResponse';
+import { ApiResponse } from '../exceptions';
 
 type AsyncFunction = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 

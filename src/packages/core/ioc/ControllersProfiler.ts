@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import path from 'path';
-import getModules from '../helpers/getModules';
+import { getModules } from '../helpers';
 
 class ControllersProfiler {
   public static async profile(container: Container): Promise<any[]> {

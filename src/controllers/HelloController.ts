@@ -1,8 +1,8 @@
 import { Controller, Get, Use } from '../packages/core/decorators';
-import { SuccessResponse } from '../packages/core/exceptions/api/ApiResponse';
-import bodyParser from 'body-parser';
+import { SuccessResponse } from '../packages/core/exceptions';
+// import bodyParser from 'body-parser';
 import { GetHelloQuery } from '../modules/hello/queries/GetHelloQuery';
-import { CreateHelloCommand } from '../modules/hello/commands/CreateHelloCommand';
+// import { CreateHelloCommand } from '../modules/hello/commands/CreateHelloCommand';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { MemMediator } from '../packages/mem-events';
