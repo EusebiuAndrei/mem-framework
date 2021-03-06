@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import path from 'path';
-import EventType from '../../mem-events/EventType';
+import { EventType } from '../../mem-events';
 import { MemMediator } from '../../mem-events';
 import getModules from '../helpers/getModules';
 

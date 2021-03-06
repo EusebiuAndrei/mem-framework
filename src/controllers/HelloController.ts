@@ -17,7 +17,7 @@ class HelloController {
   @Use(tryMiddleware)
   @Get()
   public async getHello(req: Request, res: Response): Promise<SuccessResponse<any>> {
-    const result = await this._mediator.emitAction(new GetHelloQuery(1));
+    const result = await this._mediator.send(new GetHelloQuery(1));
     return new SuccessResponse('success', result);
   }
 
