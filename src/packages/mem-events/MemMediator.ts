@@ -1,6 +1,7 @@
 import { Emitter, EventCallback, Mediator } from './types';
 import { NoListenerError, OneListenerAcceptedError } from './exceptions';
 import { getEventMetadata } from './decorators';
+import { guardEvent } from './utils';
 
 // 1 Event <-> 1 Listener ( Query | Command )
 class MemMediator implements Mediator {
@@ -33,6 +34,8 @@ class MemMediator implements Mediator {
   // Send this event
   // Receive a response from the handler
   public async send(event: any) {
+    guardEvent(event);
+
     const meta = getEventMetadata(event);
     const listener = this.listeners.get(meta.name);
 
@@ -47,6 +50,8 @@ class MemMediator implements Mediator {
   // Emit this event forward
   // Receive a response from the handler
   public async emit(event: any) {
+    guardEvent(event);
+
     const meta = getEventMetadata(event);
     const listener = this.listeners.get(meta.name);
 

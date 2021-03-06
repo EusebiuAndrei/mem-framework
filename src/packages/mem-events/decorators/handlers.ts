@@ -1,18 +1,24 @@
 import { EventMetadata, EventType, HandlerMetadata } from '../types';
 import { EVENT_METADATA_KEY, HANDLER_METADATA_KEY } from './constants';
+import NotEventError from '../exceptions/NotEventError';
+import OnlyHandlesCommandsError from '../exceptions/OnlyHandlesCommandsError';
+import OnlyHandlesQueriesError from '../exceptions/OnlyHandlesQueriesError';
 
 const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]): {} }) => {
   const eventMeta = Reflect.getMetadata(EVENT_METADATA_KEY, EventClass) as EventMetadata;
+  if (!eventMeta) {
+    throw new NotEventError();
+  }
 
   switch (handlerKind) {
     case EventType.QUERY:
       if (eventMeta.kind !== EventType.QUERY) {
-        throw new Error('QueryHandler can only handle Queries');
+        throw new OnlyHandlesQueriesError();
       }
       break;
     case EventType.COMMAND:
       if (eventMeta.kind !== EventType.COMMAND) {
-        throw new Error('CommandHandler can only handle Commands');
+        throw new OnlyHandlesCommandsError();
       }
       break;
     case EventType.EVENT:

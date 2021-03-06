@@ -1,14 +1,18 @@
-import { Emitter, EventType, Mediator } from './types';
-import { getHandlerMetadata } from './decorators';
+import { Emitter, EventType, Handler, Mediator } from './types';
+import { getHandlerMetadata, hasEventMetadata, hasHandlerMetadata } from './decorators';
+import NotEventError from './exceptions/NotEventError';
+import NotHandlerError from './exceptions/NotHandlerError';
 
 interface RegisterHandlersArgs {
   emitter: Emitter;
   mediator: Mediator;
-  handlers: any[];
+  handlers: Handler<any, any>[];
 }
 
 export const registerHandlers = ({ emitter, mediator, handlers }: RegisterHandlersArgs) => {
   handlers.forEach((handler) => {
+    guardHandler(handler);
+
     const meta = getHandlerMetadata(handler);
     const callback = handler.handle.bind(handler);
 
@@ -18,4 +22,16 @@ export const registerHandlers = ({ emitter, mediator, handlers }: RegisterHandle
       mediator.on(meta.event.name, callback);
     }
   });
+};
+
+export const guardEvent = (event: any) => {
+  if (!hasEventMetadata(event)) {
+    throw new NotEventError();
+  }
+};
+
+export const guardHandler = (handler: any) => {
+  if (!hasHandlerMetadata(handler)) {
+    throw new NotHandlerError();
+  }
 };
