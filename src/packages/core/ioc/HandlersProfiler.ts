@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import path from 'path';
-import { EventType, getHandlerMetadata } from '../../mem-events';
+import { EventType, registerHandlers } from '../../mem-events';
 import { MemMediator } from '../../mem-events';
 import getModules from '../helpers/getModules';
 
@@ -16,7 +16,11 @@ class HandlersProfiler {
       handlers.push(container.get(Handler));
     }
 
-    HandlersProfiler.registerHandlers(container, handlers);
+    registerHandlers({
+      emitter: container.get('ee'),
+      mediator: container.get(MemMediator),
+      handlers,
+    });
 
     return handlers;
   }
@@ -28,19 +32,6 @@ class HandlersProfiler {
       moduleNameUppercase.endsWith(EventType.COMMAND) ||
       moduleNameUppercase.endsWith(EventType.EVENT)
     );
-  }
-
-  private static registerHandlers(container: Container, handlers: any[]) {
-    handlers.forEach((handler) => {
-      const meta = getHandlerMetadata(handler);
-      const callback = handler.handle.bind(handler);
-
-      if (meta.kind === EventType.EVENT) {
-        (container.get('ee') as any).on(meta.event.name, callback);
-      } else {
-        (container.get(MemMediator) as any).on(meta.event.name, callback);
-      }
-    });
   }
 }
 

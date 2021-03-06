@@ -1,9 +1,7 @@
-import { delay } from './utils';
-import { QueryHandler, Query, EventHandler, getEventMetadata } from './decorators';
-import MemRegistry from './MemRegistry';
+import { QueryHandler, Query, EventHandler } from './decorators';
+import MemEvents from './MemEvents';
 import { HookContext, hooks, NextFunction } from '@feathersjs/hooks';
 import { Handler } from './types';
-import { GetHelloQuery } from '../../modules/hello/queries/GetHelloQuery';
 
 @Query()
 export class CoolQuery {
@@ -35,15 +33,22 @@ class CoolQueryEventHandler implements Handler<CoolQuery, string> {
   }
 }
 
-MemRegistry.create(
+const memEvents = MemEvents.create();
+
+memEvents.registerHandlers(
   new CoolQueryEventHandler(),
   new CoolQueryHandler(),
   new CoolQueryEventHandler(),
 );
 
 const main = async () => {
-  const result = await MemRegistry.memMediator.emit(new CoolQuery(23));
+  const result = await memEvents.mediator.emit(new CoolQuery(23));
   console.log('RESULT', result);
 };
 
 main();
+
+// Helpers
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
