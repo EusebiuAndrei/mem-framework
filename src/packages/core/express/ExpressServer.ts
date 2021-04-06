@@ -44,6 +44,7 @@ abstract class ExpressServer {
             ...(routeMeta.middlewares ?? ([] as any[])),
           ];
 
+          // ! app[routeMethod]
           this.app.get(
             `/${controllerMeta.path}/${routeMeta.path}`,
             middlewares,

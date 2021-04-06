@@ -1,8 +1,10 @@
 import 'reflect-metadata';
 import { EventInstanceMetadata, EventMetadata, EventType } from '../types';
 import { EVENT_METADATA_KEY } from './constants';
+import EventTransport from '../EventTransport';
 
 const BaseEvent = (eventKind: EventType, name?: string) =>
+  // function <T extends { new (...args: any[]): {} }>(constructor: T): T {
   function <T extends { new (...args: any[]): {} }>(constructor: T): T {
     const eventMeta: EventMetadata = {
       name: name ?? extractNameFromConstructor(constructor, eventKind),
@@ -13,7 +15,16 @@ const BaseEvent = (eventKind: EventType, name?: string) =>
 
     return class extends constructor {
       constructor(...args: any[]) {
-        super(args);
+        if (args.length === 1) {
+          super(args[0]);
+        } else {
+          super(args);
+        }
+
+        if (!(this instanceof EventTransport)) {
+          console.log('la');
+          throw new Error('Event must be an EventTransport');
+        }
 
         const meta = getEventMetadata(this);
         const eventMeta: EventInstanceMetadata = {

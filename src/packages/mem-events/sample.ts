@@ -2,10 +2,12 @@ import { QueryHandler, Query, EventHandler } from './decorators';
 import MemEvents from './MemEvents';
 import { HookContext, hooks, NextFunction } from '@feathersjs/hooks';
 import { Handler } from './types';
+import EventTransport from './EventTransport';
 
 @Query()
-class CoolQuery {
-  constructor(public readonly avg: number) {}
+class CoolQuery extends EventTransport {
+  public readonly avg: number;
+  // constructor(public readonly avg: number) {}
 }
 
 const niceHook = async (context: HookContext, next: NextFunction) => {
@@ -42,7 +44,7 @@ memEvents.registerHandlers(
 );
 
 const main = async () => {
-  const result = await memEvents.mediator.emit(new CoolQuery(23));
+  const result = await memEvents.mediator.emit(new CoolQuery({ avg: 23 }));
   console.log('RESULT', result);
 };
 

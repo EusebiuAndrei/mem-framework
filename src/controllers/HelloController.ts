@@ -7,17 +7,21 @@ import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { MemMediator } from '../packages/mem-events';
 import { tryMiddleware } from '../middlewares';
+import PhotoRepository from '../repos/PhotoRepository';
 
 @injectable()
 @Use(tryMiddleware)
 @Controller('hello')
 class HelloController {
   @inject(MemMediator) private _mediator: MemMediator;
+  @inject(PhotoRepository) private _photoRepo: PhotoRepository;
 
   @Use(tryMiddleware)
   @Get()
   public async getHello(req: Request, res: Response): Promise<SuccessResponse<any>> {
-    const result = await this._mediator.send(new GetHelloQuery(1));
+    const a = await this._photoRepo.find();
+    console.log(a);
+    const result = await this._mediator.send(new GetHelloQuery({ type: 1 }));
     return new SuccessResponse('success', result);
   }
 
