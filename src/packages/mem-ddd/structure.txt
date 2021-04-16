@@ -1,0 +1,31 @@
+domain
+|---Meetings - aggregate [*]
+    |---events - domain events
+        |---MeetingAttendeeAddedDomainEvent [*]
+    |---rules - business rules
+        |---MeetingCannotBeChangedAfterStartRule [*]
+    |---Meeting - aggregate root [1]
+    |---MeetingAttendee - entity [*]
+    |---MeetingLocation - value object [*]
+
+application
+|---queries
+    |---getMeetingAttendees - query [*]
+        |---GetMeetingAttendeesQuery - the query with the shape of the data it caries [1]
+        |---GetMeetingAttendeesQueryHandler - the handler of the query [1]
+        |---MeetingAttendeeDto - the shape of the data returned by the query [1]
+|---commands
+    |---createMeeting - command [*]
+            |---CreateMeetingCommand - the command with the shape of the data it caries [1]
+            |---CreateMeetingCommandHandler - the handler of the command [1]
+
+infrastructure
+|---domain
+    |---Meetings
+        |---OrmMeetingsRepository
+        |---MeetingModel
+        |---MeetingMapper
+
+configuration
+|---Launcher
+|---IocContainer

@@ -45,7 +45,7 @@ abstract class ExpressServer {
           ];
 
           // ! app[routeMethod]
-          this.app.get(
+          this.app[routeMeta.method](
             `/${controllerMeta.path}/${routeMeta.path}`,
             middlewares,
             asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

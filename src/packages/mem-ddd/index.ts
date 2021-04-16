@@ -1,3 +1,9 @@
-export { default as Entity } from './Entity';
-export { default as ValueObject } from './ValueObject';
-export { default as AggregateRoot } from './AggregateRoot';
+export * from './rule/BusinessRule';
+export * from './rule/BusinessRuleChecker';
+export * from './rule/BusinessRuleValidationError';
+
+export * from './identity/Identifier';
+export * from './identity/UniqueEntityId';
+
+export * from './model/Entity';
+export * from './model/ValueObject';

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ApiResponse } from '../exceptions';
+import { ApiError, ApiResponse } from '../exceptions';
 
 type AsyncFunction = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
@@ -10,8 +10,9 @@ export default (execution: AsyncFunction) => async (
 ) => {
   // execution(req, res, next).catch(next);
   try {
-    const api: ApiResponse = await execution(req, res, next);
-    api.send(res);
+    const api: ApiResponse | ApiError = await execution(req, res, next);
+    if (api instanceof ApiResponse) api.send(res);
+    else ApiError.handle(api, res);
   } catch (err) {
     next(err);
   }

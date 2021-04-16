@@ -1,40 +1,32 @@
 import { Container } from 'inversify';
-import { ControllersProfiler, HandlersProfiler, MemEventsProfiler } from './index';
+import { Handler } from '../../mem-events';
 
 // create a chain of profilers to give to base launcher and made it run accordingly
-abstract class BaseLauncher {
+abstract class BaseLauncher<T = Record<string, any>> {
   public abstract async profile(): Promise<void>;
 
-  protected _container = new Container();
-  protected _handlers: any[] = [];
-  protected _controllers: any[] = [];
+  private readonly _container: Container = null;
+  private _handlers: Array<Handler<any, any>> = [];
+  public props = {} as T;
+
+  constructor() {
+    this._container = new Container();
+  }
 
   async launch() {
-    await this.onStart();
     await this.profile();
-    await this.onMem();
-    await this.onEnd();
   }
 
-  /**
-   *
-   */
-  async onStart(): Promise<void> {
-    return Promise.resolve(undefined);
+  public get container(): Container {
+    return this._container;
   }
 
-  /**
-   * This method is called and the end of Dependency Injection phase
-   * @returns {Promise<unknown>}
-   */
-  async onEnd(): Promise<void> {
-    return Promise.resolve(undefined);
+  public get handlers(): Array<Handler<any, any>> {
+    return this._handlers;
   }
 
-  async onMem() {
-    await MemEventsProfiler.profile(this._container);
-    this._handlers = await HandlersProfiler.profile(this._container);
-    this._controllers = await ControllersProfiler.profile(this._container);
+  public set handlers(handlers: Array<Handler<any, any>>) {
+    this._handlers = handlers;
   }
 }
 

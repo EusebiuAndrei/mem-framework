@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import path from 'path';
-import { EventType, MemMediator, registerHandlers } from '../../mem-events';
+import { EventType, Handler, MemMediator, registerHandlers } from '../../mem-events';
 import { getModules } from '../helpers';
 
 class HandlersProfiler {
@@ -21,7 +21,7 @@ class HandlersProfiler {
       handlers,
     });
 
-    return handlers;
+    return handlers as Array<Handler<any, any>>;
   }
 
   private static check(fileName: string) {
