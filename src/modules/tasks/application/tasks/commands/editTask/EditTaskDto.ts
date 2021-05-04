@@ -1,8 +1,9 @@
-import WorkTrack from '../../../models/ValueObjects/WorkTrack';
+import WorkTrack from '../../../../../../models/ValueObjects/WorkTrack';
 
 class EditTaskDto {
   title?: string;
   description?: string;
+  estimatedTime?: number;
   completedTime?: number;
   statusId?: number;
   priorityId?: number;

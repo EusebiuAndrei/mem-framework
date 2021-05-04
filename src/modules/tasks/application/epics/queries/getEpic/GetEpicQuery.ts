@@ -5,7 +5,7 @@ import {
   EventTransport,
 } from '../../../../../../packages/mem-events';
 import { inject, injectable } from 'inversify';
-import TaskRepository from '../../../../infrastructure/repos/TaskRepository';
+import EpicRepository from '../../../../infrastructure/repos/EpicRepository';
 
 @Query()
 export class GetEpicQuery extends EventTransport {
@@ -15,22 +15,22 @@ export class GetEpicQuery extends EventTransport {
 @injectable()
 @QueryHandler(GetEpicQuery)
 class GetEpicQueryHandler implements Handler<GetEpicQuery, any> {
-  @inject(TaskRepository) private _taskRepo: TaskRepository;
+  @inject(EpicRepository) private _epicRepo: EpicRepository;
 
   async handle(query: GetEpicQuery) {
     const { id } = query;
-    const result = await this._taskRepo.findOne(
+    const epic = await this._epicRepo.findOne(
       { id },
       {
-        relations: ['status', 'priority', 'tags', 'assignees', 'subTasks', 'iteration', 'epic'],
+        relations: ['status', 'priority', 'project', 'tasks', 'team'],
       },
     );
 
-    if (!result) {
+    if (!epic) {
       throw new Error(`There isn't an epic with id ${id}`);
     }
 
-    return result;
+    return epic;
   }
 }
 

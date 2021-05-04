@@ -1,4 +1,4 @@
-enum TaskEnum {
+enum StatusEnum {
   ARCHIVED = 1,
   ACTIVE,
   PLANNED,
@@ -10,4 +10,4 @@ enum TaskEnum {
   COMPLETED,
 }
 
-export default TaskEnum;
+export default StatusEnum;

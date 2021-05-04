@@ -1,15 +1,16 @@
-import { BusinessRule, UniqueEntityID } from '../../..';
+import { BusinessRule } from '../../..';
 import { MeetingProposalAgreement } from '../MeetingProposalAgreement';
+import { MeetingProposalAgreementParty } from '../MeetingProposalAgreementParty';
 
 export class MeetingProposalAgreementCanBeChangedOnlyByPartyRule implements BusinessRule {
   message = 'Meeting proposal agreement cannot be changed by a person who does not take part in it';
 
   constructor(
     private readonly meetingProposalAgreement: MeetingProposalAgreement,
-    private readonly issuerId: UniqueEntityID,
+    private readonly party: MeetingProposalAgreementParty,
   ) {}
 
   isBroken() {
-    return !this.meetingProposalAgreement.hasParty(this.issuerId);
+    return !this.meetingProposalAgreement.hasParty(this.party);
   }
 }

@@ -1,6 +1,11 @@
-import { QueryHandler, Query, Handler, EventTransport } from '../../../../../packages/mem-events';
+import {
+  QueryHandler,
+  Query,
+  Handler,
+  EventTransport,
+} from '../../../../../../packages/mem-events';
 import { inject, injectable } from 'inversify';
-import TaskRepository from '../../../infrastructure/repos/TaskRepository';
+import TaskRepository from '../../../../infrastructure/repos/TaskRepository';
 
 @Query()
 export class GetTaskQuery extends EventTransport {
@@ -16,8 +21,15 @@ class GetTaskQueryHandler implements Handler<GetTaskQuery, any> {
     const { id } = query;
     const result = await this._taskRepo.findOne(
       { id },
-      { relations: ['status', 'priority', 'tags', 'assignees', 'subTasks', 'iteration', 'epic'] },
+      {
+        relations: ['status', 'priority', 'tags', 'assignees', 'subTasks', 'iteration', 'epic'],
+      },
     );
+
+    if (!result) {
+      throw new Error(`There isn't a task with id ${id}`);
+    }
+
     return result;
   }
 }

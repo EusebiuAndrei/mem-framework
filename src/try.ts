@@ -1,29 +1,22 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import Photo from './models/Photo';
+import { Entity } from './packages/mem-ddd';
+import DomainEvents, { feedDomainEvents } from './packages/mem-ddd/model/DomainEvents';
+import { traverseDeep } from './packages/mem-ddd/utils';
 
-createConnection({
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'seb9913',
-  database: 'projecto',
-  entities: [Photo],
-  synchronize: true,
-  logging: false,
-})
-  .then(async (connection) => {
-    const photo = new Photo();
-    photo.name = 'Me and Bears';
-    photo.description = 'I am near polar bears';
-    photo.filename = 'photo-with-bears.jpg';
-    photo.views = 1;
-    photo.isPublished = true;
+class ABC {
+  @feedDomainEvents(new DomainEvents())
+  async aa() {
+    return 'try';
+  }
+}
 
-    await connection.manager.save(photo);
-    const photoRepository = connection.getRepository(Photo);
-    const a = photoRepository.find();
-    console.log('Photo has been saved');
-  })
-  .catch((error) => console.log(error));
+const a = new ABC();
+
+const main = async () => {
+  const b = await a.aa();
+  console.log(b);
+};
+
+main();

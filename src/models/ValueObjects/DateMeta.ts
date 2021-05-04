@@ -1,14 +1,12 @@
 import 'reflect-metadata';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-class LifeMeta {
-  estimated: number;
-
+class DateMeta {
   @CreateDateColumn()
-  createDate: Date;
+  create: Date;
 
   @UpdateDateColumn()
-  updateDate: Date;
+  update: Date;
 }
 
-export default LifeMeta;
+export default DateMeta;

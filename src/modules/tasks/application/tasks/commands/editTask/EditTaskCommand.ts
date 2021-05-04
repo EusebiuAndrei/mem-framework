@@ -1,13 +1,16 @@
-import { Handler, CommandHandler, Command, EventTransport } from '../../../packages/mem-events';
+import {
+  Command,
+  CommandHandler,
+  EventTransport,
+  Handler,
+} from '../../../../../../packages/mem-events';
 import { inject, injectable } from 'inversify';
-import TaskRepository from '../repos/TaskRepository';
-import CreateTaskDto from '../dtos/CreateTaskDto';
-import StatusEnum from '../../core/constants/StatusEnum';
-import PriorityEnum from '../../core/constants/PriorityEnum';
-import EditTaskDto from '../dtos/EditTaskDto';
-import WorkTrackValueObject from '../domain/WorkTrackValueObject';
-import Task from '../../../models/Task';
-import RelationsUpdater from '../../core/RelationsUpdater';
+import TaskRepository from '../../../../infrastructure/repos/TaskRepository';
+import EditTaskDto from './EditTaskDto';
+import WorkTrackValueObject from '../../../../domain/WorkTrackValueObject';
+import Task from '../../../../../../models/Task';
+import RelationsUpdater from '../../../../../core/RelationsUpdater';
+import WorkTrack from '../../../../../../models/ValueObjects/WorkTrack';
 
 @Command()
 export class EditTaskCommand extends EventTransport {
@@ -27,14 +30,23 @@ class CreateTaskHandler implements Handler<EditTaskCommand, any> {
 
     if (taskDto.title) task.title = taskDto.title;
     if (taskDto.description) task.description = taskDto.description;
-    if (taskDto.completedTime) {
-      const workTrack = new WorkTrackValueObject(
-        task.workTrack.estimated,
-        task.workTrack.completed,
-        task.workTrack.remaining,
+
+    if (taskDto.estimatedTime) {
+      const workTrack = WorkTrackValueObject.createNew(taskDto.estimatedTime);
+      task.completedTime = workTrack.completed;
+      task.estimatedTime = workTrack.estimated;
+      task.remainingTime = workTrack.remaining;
+    } else if (taskDto.completedTime) {
+      let workTrack = new WorkTrackValueObject(
+        task.estimatedTime,
+        task.completedTime,
+        task.remainingTime,
       );
-      workTrack.addCompletedTime(taskDto.completedTime);
-      task.workTrack = workTrack;
+      workTrack = workTrack.addCompletedTime(taskDto.completedTime);
+
+      task.completedTime = workTrack.completed;
+      task.estimatedTime = workTrack.estimated;
+      task.remainingTime = workTrack.remaining;
     }
     RelationsUpdater.replaceOneRelation<Task>(task, 'status', taskDto.statusId);
     RelationsUpdater.replaceOneRelation(task, 'priority', taskDto.priorityId);
@@ -45,8 +57,6 @@ class CreateTaskHandler implements Handler<EditTaskCommand, any> {
     RelationsUpdater.replaceOneRelation(task, 'epic', taskDto.epicId);
 
     await this._taskRepo.save(task);
-
-    return task;
   }
 }
 

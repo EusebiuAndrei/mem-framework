@@ -1,9 +1,15 @@
-import { Handler, CommandHandler, Command, EventTransport } from '../../../packages/mem-events';
+import {
+  Handler,
+  CommandHandler,
+  Command,
+  EventTransport,
+} from '../../../../../../packages/mem-events';
 import { inject, injectable } from 'inversify';
-import TaskRepository from '../repos/TaskRepository';
-import CreateTaskDto from '../dtos/CreateTaskDto';
-import StatusEnum from '../../core/constants/StatusEnum';
-import PriorityEnum from '../../core/constants/PriorityEnum';
+import TaskRepository from '../../../../infrastructure/repos/TaskRepository';
+import CreateTaskDto from './CreateTaskDto';
+import StatusEnum from '../../../../../core/constants/StatusEnum';
+import PriorityEnum from '../../../../../core/constants/PriorityEnum';
+import WorkTrackValueObject from '../../../../domain/WorkTrackValueObject';
 
 @Command()
 export class CreateTaskCommand extends EventTransport {
@@ -18,23 +24,23 @@ class CreateTaskHandler implements Handler<CreateTaskCommand, any> {
   async handle(command: CreateTaskCommand) {
     const { task: taskDto } = command;
 
-    const workTrack = {
-      estimated: taskDto.estimatedTime,
-      remaining: taskDto.estimatedTime,
-      completed: 0,
-    };
+    const workTrack = WorkTrackValueObject.createNew(taskDto.estimatedTime);
 
     const task = this._taskRepo.create({
       title: taskDto.title,
       description: taskDto.description,
-      workTrack,
+      estimatedTime: workTrack.estimated,
+      remainingTime: workTrack.remaining,
+      completedTime: 0,
       status: {
-        id: taskDto.statusId ?? StatusEnum.TO_DO,
+        id: StatusEnum.TO_DO,
       },
       priority: {
         id: taskDto.priorityId ?? PriorityEnum.LOW,
       },
     });
+
+    // task.workTrack = workTrack;
 
     await this._taskRepo.save(task);
 

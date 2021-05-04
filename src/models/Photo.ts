@@ -1,25 +1,39 @@
 import 'reflect-metadata';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, EntitySchema } from 'typeorm';
 
-@Entity()
+const PhotoSchema = new EntitySchema({
+  name: 'Photo',
+  tableName: 'photos',
+  columns: {},
+});
+
+@Entity('fgf', { schema: 'Photo' })
 class Photo {
-  @PrimaryGeneratedColumn()
-  id: number;
+  private _id: number;
+  private _name: string;
+  private _description: string;
+  private _filename: string;
+  private _views: number;
+  private _isPublished: boolean;
 
-  @Column()
-  name: string;
-
-  @Column()
-  description: string;
-
-  @Column()
-  filename: string;
-
-  @Column()
-  views: number;
-
-  @Column()
-  isPublished: boolean;
+  get id() {
+    return this._id;
+  }
+  get name() {
+    return this._name;
+  }
+  get description() {
+    return this._description;
+  }
+  get filename() {
+    return this._filename;
+  }
+  get views() {
+    return this._views;
+  }
+  get isPublished() {
+    return this._isPublished;
+  }
 }
 
 export default Photo;

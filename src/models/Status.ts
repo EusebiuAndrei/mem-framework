@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import Task from './Task';
 
 @Entity()
-class TaskStatus {
+class Status {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,4 +14,4 @@ class TaskStatus {
   title: string;
 }
 
-export default TaskStatus;
+export default Status;

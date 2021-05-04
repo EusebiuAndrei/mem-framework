@@ -1,14 +1,15 @@
-import { BusinessRule, UniqueEntityID } from '../../..';
+import { BusinessRule } from '../../..';
+import { MeetingProposalAgreementParty } from '../MeetingProposalAgreementParty';
 
 export class PartyCannotChangeMeetingProposalAgreementConsecutivelyRule implements BusinessRule {
   message = 'A party cannot change a meeting two times consecutively';
 
   constructor(
-    private readonly currentlyProposingPartyId: UniqueEntityID,
-    private readonly lastProposingPartyId: UniqueEntityID,
+    private readonly currentlyProposingPartyId: MeetingProposalAgreementParty,
+    private readonly lastProposingPartyId: MeetingProposalAgreementParty,
   ) {}
 
   isBroken() {
-    return this.currentlyProposingPartyId === this.lastProposingPartyId;
+    return this.currentlyProposingPartyId.equals(this.lastProposingPartyId);
   }
 }

@@ -3,42 +3,43 @@ import { MeetingProposalAgreementDecision } from './MeetingProposalAgreementDeci
 import { MeetingProposalAgreementStatus } from './MeetingProposalAgreementStatus';
 import { MeetingProposalAgreementParty } from './MeetingProposalAgreementParty';
 import { MeetingProposalAgreementCanBeChangedOnlyByPartyRule } from './rules/MeetingProposalAgreementCanBeChangedOnlyByPartyRule';
-import { MeetingProposalAgreementProfessorParty } from './MeetingProposalAgreementProfessorParty';
-import { MeetingProposalAgreementStudentParty } from './MeetingProposalAgreementStudentParty';
 import { PartyCannotChangeMeetingProposalAgreementConsecutivelyRule } from './rules/PartyCannotChangeMeetingProposalAgreementConsecutivelyRule';
 import { MeetingProposalAgreementCannotBeChangedAfterAcceptanceRule } from './rules/MeetingProposalAgreementCannotBeChangedAfterAcceptanceRule';
 import { MeetingProposalAgreementCannotBeChangedAfterRejectionRule } from './rules/MeetingProposalAgreementCannotBeChangedAfterRejectionRule';
+import { MeetingProposalAgreementPartyRole } from './MeetingProposalAgreementPartyRole';
 
 export interface MeetingAgreementProps {
-  studentId: UniqueEntityID;
-  professorId: UniqueEntityID;
-  lastProposingPartyId: UniqueEntityID;
-  studentDecision: MeetingProposalAgreementDecision;
-  professorDecision: MeetingProposalAgreementDecision;
+  professor: MeetingProposalAgreementParty;
+  student: MeetingProposalAgreementParty;
+  lastProposingParty: MeetingProposalAgreementParty;
   status: MeetingProposalAgreementStatus;
 }
 
-export type MeetingAgreementFactoryProps = Pick<MeetingAgreementProps, 'studentId' | 'professorId'>;
+export type MeetingAgreementFactoryProps = {
+  studentId: UniqueEntityID;
+  professorId: UniqueEntityID;
+};
 
 export class MeetingProposalAgreement extends Entity<MeetingAgreementProps> {
   public get status() {
     return this.props.status;
   }
 
-  public get studentDecision() {
-    return this.props.studentDecision;
-  }
-
-  public get professorDecision() {
-    return this.props.professorDecision;
-  }
-
   private constructor(props: MeetingAgreementFactoryProps) {
+    const student = MeetingProposalAgreementParty.create({
+      decision: MeetingProposalAgreementDecision.Accepted(),
+      role: MeetingProposalAgreementPartyRole.Student(),
+    });
+
+    const professor = MeetingProposalAgreementParty.create({
+      decision: null,
+      role: MeetingProposalAgreementPartyRole.Professor(),
+    });
+
     const constructorProps: MeetingAgreementProps = {
-      ...props,
-      lastProposingPartyId: props.studentId,
-      studentDecision: MeetingProposalAgreementDecision.Accepted(),
-      professorDecision: null,
+      lastProposingParty: student,
+      student,
+      professor,
       status: MeetingProposalAgreementStatus.InVerification(),
     };
 
@@ -49,54 +50,50 @@ export class MeetingProposalAgreement extends Entity<MeetingAgreementProps> {
     return new MeetingProposalAgreement(props);
   }
 
-  public changeTerm(partyId: UniqueEntityID) {
-    this.checkMeetingProposalAgreementChangingRules(partyId);
+  public changeTerm(party: MeetingProposalAgreementParty) {
+    this.checkMeetingProposalAgreementChangingRules(party);
 
-    const party = this.getAgreementPartyFromId(partyId);
-    party.changeTerm(this.props);
+    party.changeTerm();
+    if (party.hasProfessorRole()) {
+      this.props.status = MeetingProposalAgreementStatus.InDiscussion();
+    }
 
-    this.props.lastProposingPartyId = partyId;
+    this.props.lastProposingParty = party;
   }
 
-  public accept(partyId: UniqueEntityID) {
-    this.checkMeetingProposalAgreementChangingRules(partyId);
+  public accept(party: MeetingProposalAgreementParty) {
+    this.checkMeetingProposalAgreementChangingRules(party);
 
-    const party = this.getAgreementPartyFromId(partyId);
-    party.accept(this.props);
+    party.accept();
+    if (party.hasProfessorRole()) {
+      this.props.status = MeetingProposalAgreementStatus.Accepted();
+    }
 
-    this.props.lastProposingPartyId = partyId;
+    this.props.lastProposingParty = party;
   }
 
-  public reject(partyId: UniqueEntityID) {
-    this.checkMeetingProposalAgreementChangingRules(partyId);
+  public reject(party: MeetingProposalAgreementParty) {
+    this.checkMeetingProposalAgreementChangingRules(party);
 
-    const party = this.getAgreementPartyFromId(partyId);
-    party.reject(this.props);
+    party.reject();
+    this.props.status = MeetingProposalAgreementStatus.Rejected();
 
-    this.props.lastProposingPartyId = partyId;
+    this.props.lastProposingParty = party;
   }
 
-  private checkMeetingProposalAgreementChangingRules(partyId: UniqueEntityID) {
-    this.checkRule(new MeetingProposalAgreementCanBeChangedOnlyByPartyRule(this, partyId));
+  private checkMeetingProposalAgreementChangingRules(party: MeetingProposalAgreementParty) {
+    this.checkRule(new MeetingProposalAgreementCanBeChangedOnlyByPartyRule(this, party));
     this.checkRule(
       new PartyCannotChangeMeetingProposalAgreementConsecutivelyRule(
-        partyId,
-        this.props.lastProposingPartyId,
+        party,
+        this.props.lastProposingParty,
       ),
     );
     this.checkRule(new MeetingProposalAgreementCannotBeChangedAfterAcceptanceRule(this));
     this.checkRule(new MeetingProposalAgreementCannotBeChangedAfterRejectionRule(this));
   }
 
-  private getAgreementPartyFromId(partyId: UniqueEntityID) {
-    const party: MeetingProposalAgreementParty =
-      partyId === this.props.studentId
-        ? new MeetingProposalAgreementProfessorParty()
-        : new MeetingProposalAgreementStudentParty();
-    return party;
-  }
-
-  public hasParty(partyId: UniqueEntityID) {
-    return partyId === this.props.studentId || partyId === this.props.professorId;
+  public hasParty(party: MeetingProposalAgreementParty) {
+    return party.equals(this.props.student) || party.equals(this.props.professor);
   }
 }
