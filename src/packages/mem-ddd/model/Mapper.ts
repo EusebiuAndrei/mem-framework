@@ -1,22 +1,51 @@
-import { Entity } from './Entity';
-import { ObjectLiteral } from '../types';
+import Reshaper from './reshaper/Reshaper';
 
-class MapperRegistry {
-  private registry = new Map<string, Mapper<any, any>>();
+class Item {
+  name: string;
+  power: number;
 
-  public getMap<TEntity extends Entity<any>, TModel extends ObjectLiteral>(object: ObjectLiteral) {
-    const key = object.constructor.name;
-    const mapper = this.registry.get(key) as Mapper<TEntity, TModel>;
+  constructor(name: string, power: number) {
+    this.name = name;
+    this.power = power;
+  }
+}
 
-    return mapper;
+class A {
+  bc: string;
+  item: Item;
+
+  constructor(bc: string, item: Item) {
+    this.bc = bc;
+    this.item = item;
+  }
+}
+
+class B {
+  public abc: string;
+  public item_name: string;
+  public item_power: number;
+
+  constructor(abc: string, item_name: string, item_power: number) {
+    this.abc = abc;
+    this.item_name = item_name;
+    this.item_power = item_power;
   }
 
-  public createMapper<TEntity extends Entity<any>, TModel extends ObjectLiteral>() {}
+  public doSmth() {
+    console.log('BBBBBB');
+  }
 }
 
-export interface Mapper<TEntity extends Entity<any>, TModel extends ObjectLiteral> {
-  toDomain(model: TModel): TEntity;
-  toPersistance(entity: TEntity): TModel;
-}
+const reshaper = new Reshaper((configuration) => {
+  configuration
+    .createMap<A, B>({ source: A, destination: B }, { transformObjectToClassInstance: true })
+    .forMember<'abc'>('abc', (source) => source.bc)
+    .expand('item', (source) => source.item);
+});
 
-export default MapperRegistry;
+const a = new A('aaaa', new Item('knife', 3));
+console.log(a);
+
+const b = reshaper.reshape<A, B>({ source: A, destination: B }, a);
+console.log(b);
+b.doSmth();
