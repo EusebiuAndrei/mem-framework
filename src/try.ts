@@ -1,22 +1,32 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
-import Photo from './models/Photo';
-import { Entity } from './packages/mem-ddd';
-import DomainEvents, { feedDomainEvents } from './packages/mem-ddd/model/DomainEvents';
-import { traverseDeep } from './packages/mem-ddd/utils';
+import { MeetingProposal } from './packages/mem-ddd/examples/meetingProposal/MeetingProposal';
 
-class ABC {
-  @feedDomainEvents(new DomainEvents())
-  async aa() {
-    return 'try';
-  }
+class InnerAbc {
+  public inner: string;
 }
 
-const a = new ABC();
+class ABC {
+  private _some: string;
+
+  private constructor(some: string) {
+    this._some = some;
+  }
+
+  get some() {
+    return this._some;
+  }
+}
+Object.defineProperty(ABC.prototype, 'some', { enumerable: true });
 
 const main = async () => {
-  const b = await a.aa();
-  console.log(b);
+  // console.log(ABC);
+
+  const abc = new (MeetingProposal.prototype as any).constructor();
+  // console.log(abc);
+  for (const key in abc) {
+    console.log(key);
+  }
+  // console.log(Object.getOwnPropertyDescriptor(abc, 'some'));
 };
 
 main();

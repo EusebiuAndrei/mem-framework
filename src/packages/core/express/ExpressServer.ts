@@ -1,6 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import Logger from '../Logger';
-import { port } from '../../../config';
+import { port } from '../config';
 import ErrorHandler from './ErrorHandler';
 import {
   getControllerMetadata,

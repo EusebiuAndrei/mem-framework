@@ -7,6 +7,4 @@ export * from './express';
 
 export * from './helpers';
 export { default as Logger } from './Logger';
-export { default as InMemoryORM } from './InMemoryORM';
-
 export * from './types';
