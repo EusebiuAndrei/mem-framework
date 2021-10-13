@@ -1,4 +1,4 @@
-import { QueryHandler, Query, Handler, EventTransport } from '../../../packages/mem-events';
+import { QueryHandler, Query, Handler, EventTransport } from '../../../../packages/mem-events';
 import { hooks } from '@feathersjs/hooks';
 import { niceHook } from '../hooks';
 import { inject, injectable } from 'inversify';

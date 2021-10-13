@@ -1,4 +1,4 @@
-import BaseLauncher from './BaseLauncher';
+import BaseLauncher from '../BaseLauncher';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 const typeormDbProfiler = async (launcher: BaseLauncher, options: ConnectionOptions) => {

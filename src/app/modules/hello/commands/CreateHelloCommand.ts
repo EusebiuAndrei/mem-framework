@@ -1,4 +1,4 @@
-import { Handler, CommandHandler, Command } from '../../../packages/mem-events';
+import { Handler, CommandHandler, Command } from '../../../../packages/mem-events';
 import { injectable } from 'inversify';
 
 @Command()

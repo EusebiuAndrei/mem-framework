@@ -1,11 +1,13 @@
 import { Container } from 'inversify';
-import path from 'path';
-import { getModules } from '../helpers';
+import { getModules } from '../../helpers';
+import { AutomaticRegistrationOptions } from '../types';
 
 class ControllersProfiler {
-  public static async profile(container: Container): Promise<any[]> {
-    const modulesDirPath = path.join(__dirname, '..', '..', '..', 'controllers');
-    const modules = await getModules(modulesDirPath, ControllersProfiler.check);
+  public static async profile(
+    container: Container,
+    options: AutomaticRegistrationOptions,
+  ): Promise<any[]> {
+    const modules = await getModules(options.rootDirectory, ControllersProfiler.check);
 
     const controllers = [];
     for (const module of modules) {

@@ -3,7 +3,7 @@ import { Handler } from '../../mem-events';
 
 // create a chain of profilers to give to base launcher and made it run accordingly
 abstract class BaseLauncher<T = Record<string, any>> {
-  public abstract async profile(): Promise<void>;
+  public abstract profile(): Promise<void>;
 
   private readonly _container: Container = null;
   private _handlers: Array<Handler<any, any>> = [];

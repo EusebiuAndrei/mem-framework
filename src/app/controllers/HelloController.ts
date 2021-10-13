@@ -1,9 +1,9 @@
-import { Controller, Get, Use } from '../packages/core/decorators';
-import { SuccessResponse } from '../packages/core/exceptions';
+import { Controller, Get, Use } from '../../packages/core/decorators';
+import { SuccessResponse } from '../../packages/core/exceptions';
 import { GetHelloQuery } from '../modules/hello/queries/GetHelloQuery';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-import { MemMediator } from '../packages/mem-events';
+import { MemMediator } from '../../packages/mem-events';
 import { tryMiddleware } from '../middlewares';
 
 @injectable()

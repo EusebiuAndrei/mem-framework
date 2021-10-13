@@ -1,12 +1,14 @@
 import { Container } from 'inversify';
-import path from 'path';
-import { EventType, Handler, MemMediator, registerHandlers } from '../../mem-events';
-import { getModules } from '../helpers';
+import { EventType, Handler, MemMediator, registerHandlers } from '../../../mem-events';
+import { getModules } from '../../helpers';
+import { AutomaticRegistrationOptions } from '../types';
 
 class HandlersProfiler {
-  public static async profile(container: Container): Promise<any[]> {
-    const modulesDirPath = path.join(__dirname, '..', '..', '..', 'modules');
-    const modules = await getModules(modulesDirPath, HandlersProfiler.check);
+  public static async profile(
+    container: Container,
+    options: AutomaticRegistrationOptions,
+  ): Promise<any[]> {
+    const modules = await getModules(options.rootDirectory, HandlersProfiler.check);
 
     const handlers = [];
     for (const module of modules) {

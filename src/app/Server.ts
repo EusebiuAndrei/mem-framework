@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import ExpressServer from './packages/core/express/ExpressServer';
+import ExpressServer from '../packages/core/express/ExpressServer';
 import { Express } from 'express';
 
 import cors from 'cors';
