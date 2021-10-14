@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import { injectable } from 'inversify';
 import ExpressServer from '../packages/core/express/ExpressServer';
 
-import Logger from './Logger';
+import { Logger } from './services';
 import { port } from './config/index';
 
 export const corsUrl = process.env.CORS_URL;
