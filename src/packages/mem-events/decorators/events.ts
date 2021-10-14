@@ -21,11 +21,6 @@ const BaseEvent = (eventKind: EventType, name?: string) =>
           super(args);
         }
 
-        if (!(this instanceof EventTransport)) {
-          console.log('la');
-          throw new Error('Event must be an EventTransport');
-        }
-
         const meta = getEventMetadata(this);
         const eventMeta: EventInstanceMetadata = {
           ...meta,

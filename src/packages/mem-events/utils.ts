@@ -35,3 +35,14 @@ export const guardHandler = (handler: any) => {
     throw new NotHandlerError();
   }
 };
+
+export function createEvent<T>(EventClass: { new (...args: any[]): T }, eventParams: T): T {
+  const event = new EventClass();
+  guardEvent(event);
+
+  for (const prop in eventParams) {
+    event[prop] = eventParams[prop];
+  }
+
+  return event;
+}
