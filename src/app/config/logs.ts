@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 let dir = process.env.LOG_DIR;
-if (!dir) dir = path.resolve('logs');
+if (!dir) dir = path.resolve(__dirname, '..', '..', '..', 'logs');
 
 // create directory if it is not present
 if (!fs.existsSync(dir)) {

@@ -1,13 +1,14 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import { NotFoundError, ApiError, InternalError } from '../exceptions';
-import Logger from '../Logger';
-import { environment } from '../config';
+import { environment } from '../helpers';
 
 class ErrorHandler {
   readonly app: Express = express();
+  private readonly logger: any;
 
-  constructor(app: Express) {
+  constructor(app: Express, logger: any) {
     this.app = app;
+    this.logger = logger;
   }
 
   async handleErrors() {
@@ -30,7 +31,7 @@ class ErrorHandler {
         ApiError.handle(err, res);
       } else {
         if (environment === 'development') {
-          Logger.error(err);
+          this.logger.error(err);
           return res.status(500).send(err.message);
         }
         ApiError.handle(new InternalError(), res);
@@ -40,7 +41,7 @@ class ErrorHandler {
 
   handleUncaughtExceptions() {
     process.on('uncaughtException', (e) => {
-      Logger.error(e);
+      this.logger.error(e);
     });
   }
 }

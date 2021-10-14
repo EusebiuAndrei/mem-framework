@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { EventInstanceMetadata, EventMetadata, EventType } from '../types';
 import { EVENT_METADATA_KEY } from './constants';
-import EventTransport from '../EventTransport';
 
 const BaseEvent = (eventKind: EventType, name?: string) =>
   // function <T extends { new (...args: any[]): {} }>(constructor: T): T {

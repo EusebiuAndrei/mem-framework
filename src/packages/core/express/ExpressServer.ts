@@ -1,6 +1,4 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
-import Logger from '../Logger';
-import { port } from '../config';
 import ErrorHandler from './ErrorHandler';
 import {
   getControllerMetadata,
@@ -10,14 +8,27 @@ import {
 } from '../decorators';
 import { asyncHandler } from '../helpers';
 
+interface ExpressServerOptions {
+  port: number;
+}
+
 abstract class ExpressServer {
-  abstract async useMiddlewares(app: Express): Promise<void>;
+  abstract useMiddlewares(app: Express): Promise<void>;
 
   private readonly app: Express = express();
   private readonly controllers: any[];
 
-  protected constructor(controllers: any[]) {
+  private readonly options: ExpressServerOptions;
+  private readonly logger: any;
+
+  protected constructor(
+    controllers: any[],
+    dependencies: { logger: any },
+    options: ExpressServerOptions,
+  ) {
     this.controllers = controllers;
+    this.logger = dependencies.logger;
+    this.options = options;
   }
 
   async handleControllers() {
@@ -60,7 +71,7 @@ abstract class ExpressServer {
 
   async run() {
     // const middlewareHandler = new MiddlewareHandler(this.app);
-    const errorHandler = new ErrorHandler(this.app);
+    const errorHandler = new ErrorHandler(this.app, this.logger);
 
     // await middlewareHandler.useConfigMiddlewares();
     await this.useMiddlewares(this.app);
@@ -71,11 +82,11 @@ abstract class ExpressServer {
   async listen() {
     await this.run();
     this.app
-      .listen(port, () => {
-        Logger.info(`server running on port : ${port}`);
-        console.log(`server running on port : ${port}`);
+      .listen(this.options.port, () => {
+        this.logger.info(`server running on port : ${this.options.port}`);
+        console.log(`server running on port : ${this.options.port}`);
       })
-      .on('error', (e) => Logger.error(e));
+      .on('error', (e) => this.logger.error(e));
   }
 }
 

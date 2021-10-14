@@ -1,17 +1,18 @@
 import 'reflect-metadata';
-import ExpressServer from '../packages/core/express/ExpressServer';
 import { Express } from 'express';
-
 import cors from 'cors';
 import bodyParser from 'body-parser';
-
 import { injectable } from 'inversify';
+import ExpressServer from '../packages/core/express/ExpressServer';
+
+import Logger from './Logger';
+import { port } from './config/index';
 
 export const corsUrl = process.env.CORS_URL;
 @injectable()
 class Server extends ExpressServer {
   constructor(controller: any[]) {
-    super(controller);
+    super(controller, { logger: Logger }, { port });
   }
 
   async useMiddlewares(app: Express): Promise<void> {
