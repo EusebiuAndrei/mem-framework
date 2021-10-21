@@ -8,6 +8,11 @@ type MethodDecoratorParams = {
   descriptor: PropertyDescriptor;
 };
 
+/**
+ * adds to / modifies {@link RouteMetadata} to the class/method
+ * @param middlewares an indefinite number of middleware functions
+ * @returns  a decorated class/method with metadata which helps to add a middleware to the resource/route
+ */
 export const Use = (...middlewares: Function[]) =>
   function (...props: any): void {
     if (props.length === 1) {

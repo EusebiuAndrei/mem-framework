@@ -1,6 +1,12 @@
 import { HttpMethod, RouteMetadata } from '../../types';
 import { ROUTE_METADATA_KEY } from './constants';
 
+/**
+ * adds {@link RouteMetadata} to the method
+ * @param method the Http Method
+ * @param path the path of the resource
+ * @returns a decorated method with metadata which helps to represent an api http route
+ */
 export const Route = (method: HttpMethod, path = ''): MethodDecorator =>
   function (
     target: Record<string, any>, // Object

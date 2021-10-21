@@ -4,6 +4,11 @@ export enum EventType {
   EVENT = 'EVENT',
 }
 
+/*
+  QUERY/COMMAND - ApplicationEvent
+  EVENT - DomainEvent + anything else
+*/
+
 export type EventCallback = (...args: any) => Promise<any>;
 
 // Base interfaces types

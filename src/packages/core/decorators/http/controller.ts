@@ -1,6 +1,11 @@
 import { ControllerMetadata } from '../../types';
 import { CONTROLLER_METADATA_KEY } from './constants';
 
+/**
+ * adds {@link ControllerMetadata} to the class
+ * @param path the path of the resource
+ * @returns a decorated class with metadata which helps to represent a api http resource
+ */
 export const Controller = (path: string) =>
   function <T extends { new (...args: any[]): {} }>(contructor: T): T | void {
     const controllerMeta: ControllerMetadata = Reflect.getMetadata(

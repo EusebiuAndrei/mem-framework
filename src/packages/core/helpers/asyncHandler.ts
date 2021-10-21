@@ -1,5 +1,6 @@
+import { HttpError } from './../exceptions/api/ApiError';
 import { Request, Response, NextFunction } from 'express';
-import { ApiError, ApiResponse } from '../exceptions';
+import { ApiResponse } from '../exceptions';
 
 type AsyncFunction = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
@@ -10,10 +11,14 @@ export default (execution: AsyncFunction) => async (
 ) => {
   // execution(req, res, next).catch(next);
   try {
-    const api: ApiResponse | ApiError = await execution(req, res, next);
+    const api: ApiResponse = await execution(req, res, next);
     if (api instanceof ApiResponse) api.send(res);
-    else ApiError.handle(api, res);
+    // else ?
   } catch (err) {
+    if (err instanceof HttpError) {
+      err.send(res);
+    }
+
     next(err);
   }
 };

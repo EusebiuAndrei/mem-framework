@@ -1,5 +1,6 @@
+import { BadRequestError } from './../../packages/core/exceptions/api/ApiError';
 import { Controller, Get, Use } from '../../packages/core/decorators';
-import { SuccessResponse } from '../../packages/core/exceptions';
+import { Ok } from '../../packages/core/exceptions';
 import { GetHelloQuery } from '../modules/hello/queries/GetHelloQuery';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
@@ -13,9 +14,11 @@ class HelloController {
   @inject(MemMediator) private _mediator: MemMediator;
 
   @Get()
-  public async getHello(req: Request, res: Response): Promise<SuccessResponse<any>> {
+  public async getHello(req: Request, res: Response): Promise<Ok> {
     const result = await this._mediator.send(createEvent(GetHelloQuery, { type: 1 }));
-    return new SuccessResponse('success', result);
+    // throw new Error('some');
+    // throw new BadRequestError();
+    return new Ok(result);
   }
 }
 

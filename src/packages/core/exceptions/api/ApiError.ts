@@ -1,13 +1,6 @@
+import { HttpStatus, HttpResponseSender } from './../../types';
 import { Response } from 'express';
 import { environment } from '../../helpers';
-import {
-  AuthFailureResponse,
-  AccessTokenErrorResponse,
-  InternalErrorResponse,
-  NotFoundResponse,
-  BadRequestResponse,
-  ForbiddenResponse,
-} from './ApiResponse';
 
 enum ErrorType {
   BAD_TOKEN = 'BadTokenError',
@@ -22,6 +15,57 @@ enum ErrorType {
   FORBIDDEN = 'ForbiddenError',
 }
 
+export class HttpError extends Error implements HttpResponseSender {
+  constructor(
+    private readonly status: number,
+    private readonly response: string | Record<string, any>,
+  ) {
+    super();
+    this.initMessage();
+    this.name = this.constructor.name;
+  }
+
+  private initMessage() {
+    if (typeof this.response === 'string') {
+      this.message = this.response;
+    } else {
+      this.message = this.constructor.name.match(/[A-Z][a-z]+|[0-9]+/g).join(' ');
+    }
+  }
+
+  protected generateHttpResponse() {
+    if (typeof this.response === 'string') {
+      return {
+        statusCode: this.status,
+        message: this.response,
+      };
+    }
+
+    return this.response;
+  }
+
+  public send(res: Response): Response {
+    if (typeof this.response === 'string') {
+      return res.status(this.status).send(this.generateHttpResponse());
+    }
+
+    return res.status(this.status).json(this.generateHttpResponse());
+  }
+}
+
+export class BadRequestError extends HttpError {
+  constructor(description = 'Bad Request') {
+    super(HttpStatus.BAD_REQUEST, description);
+  }
+}
+
+export class InternalError extends HttpError {
+  constructor(description = 'Internal server error') {
+    super(HttpStatus.BAD_REQUEST, description);
+  }
+}
+
+/*
 export abstract class ApiError extends Error {
   constructor(public type: ErrorType, public message: string = 'error') {
     super(type);
@@ -54,63 +98,4 @@ export abstract class ApiError extends Error {
     }
   }
 }
-
-export class AuthFailureError extends ApiError {
-  constructor(message = 'Invalid Credentials') {
-    super(ErrorType.UNAUTHORIZED, message);
-  }
-}
-
-export class InternalError extends ApiError {
-  constructor(message = 'Internal error') {
-    super(ErrorType.INTERNAL, message);
-  }
-}
-
-export class BadRequestError extends ApiError {
-  constructor(message = 'Bad Request') {
-    super(ErrorType.BAD_REQUEST, message);
-  }
-}
-
-export class NotFoundError extends ApiError {
-  constructor(message = 'Not Found') {
-    super(ErrorType.NOT_FOUND, message);
-  }
-}
-
-export class ForbiddenError extends ApiError {
-  constructor(message = 'Permission denied') {
-    super(ErrorType.FORBIDDEN, message);
-  }
-}
-
-export class NoEntryError extends ApiError {
-  constructor(message = "Entry don't exists") {
-    super(ErrorType.NO_ENTRY, message);
-  }
-}
-
-export class BadTokenError extends ApiError {
-  constructor(message = 'Token is not valid') {
-    super(ErrorType.BAD_TOKEN, message);
-  }
-}
-
-export class TokenExpiredError extends ApiError {
-  constructor(message = 'Token is expired') {
-    super(ErrorType.TOKEN_EXPIRED, message);
-  }
-}
-
-export class NoDataError extends ApiError {
-  constructor(message = 'No data available') {
-    super(ErrorType.NO_DATA, message);
-  }
-}
-
-export class AccessTokenError extends ApiError {
-  constructor(message = 'Invalid access token') {
-    super(ErrorType.ACCESS_TOKEN, message);
-  }
-}
+*/
