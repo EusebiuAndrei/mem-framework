@@ -12,7 +12,9 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "eslint": "eslint . --ext .js,.ts",
-    "test": "jest --forceExit --detectOpenHandles --coverage --verbose"
+    "test": "jest --forceExit --detectOpenHandles --coverage --verbose",
+    "gen-docs": "npx typedoc --out ./docs --entryPointStrategy expand ./src/packages",
+    "gen-docs-watch": "npx typedoc --watch --out ./docs --entryPointStrategy expand ./src/packages"
   },
   "repository": {
     "type": "git",
@@ -41,7 +43,7 @@
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
-    "typedoc": "^0.20.35",
+    "typedoc": "^0.22.6",
     "typeorm": "^0.2.32",
     "uuidv4": "^6.2.6",
     "winston": "^3.2.1",

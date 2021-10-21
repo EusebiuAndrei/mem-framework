@@ -9,6 +9,10 @@ interface RegisterHandlersArgs {
   handlers: Handler<any, any>[];
 }
 
+/**
+ * registers QueryHandlers/CommandHandler for events of type Query/Command
+ * registers EventHandlers for events of type Event/Query/Command
+ */
 export const registerHandlers = ({ emitter, mediator, handlers }: RegisterHandlersArgs) => {
   handlers.forEach((handler) => {
     guardHandler(handler);

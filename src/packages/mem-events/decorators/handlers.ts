@@ -4,6 +4,12 @@ import NotEventError from '../exceptions/NotEventError';
 import OnlyHandlesCommandsError from '../exceptions/OnlyHandlesCommandsError';
 import OnlyHandlesQueriesError from '../exceptions/OnlyHandlesQueriesError';
 
+/**
+ * decorates a class and adds {@link HandlerMetadata} in order to make it behave like an EventHandler(mem)
+ * @param handlerKind the type of event
+ * @param EventClass an instance of a class decorated with {@link Event}/{@link Query}/{@link Command}
+ * @returns a handler which acts whenever the event is fired
+ */
 const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]): {} }) => {
   const eventMeta = Reflect.getMetadata(EVENT_METADATA_KEY, EventClass) as EventMetadata;
   if (!eventMeta) {
@@ -39,12 +45,24 @@ const BaseHandler = (handlerKind: EventType, EventClass: { new (...args: any[]):
   };
 };
 
+/**
+ * adds {@link HandlerMetadata} to the decorated class
+ * @returns a class decorated with BaseHandler of type QueryHandler
+ */
 export const QueryHandler = (EventClass: { new (...args: any[]): {} }) =>
   BaseHandler(EventType.QUERY, EventClass);
 
+/**
+ * adds {@link HandlerMetadata} to the decorated class
+ * @returns a class decorated with BaseHandler of type QueryHandler
+ */
 export const CommandHandler = (EventClass: { new (...args: any[]): {} }) =>
   BaseHandler(EventType.COMMAND, EventClass);
 
+/**
+ * adds {@link HandlerMetadata} to the decorated class
+ * @returns a class decorated with BaseHandler of type QueryHandler
+ */
 export const EventHandler = (EventClass: { new (...args: any[]): {} }) =>
   BaseHandler(EventType.EVENT, EventClass);
 

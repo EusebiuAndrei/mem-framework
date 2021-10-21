@@ -10,6 +10,9 @@ interface EventEmitterOptions {
   captureRejections?: boolean;
 }
 
+/**
+ * a container of {@link MemEventEmitter} and {@link MemMediator}
+ */
 class MemEvents {
   public emitter: Emitter;
   public mediator: Mediator;
@@ -28,6 +31,10 @@ class MemEvents {
     return new MemEvents(MemEventEmitter.create(options));
   }
 
+  /**
+   * It registers each received handler for it's appropriate event
+   * @param handlers any of {@link QueryHandler}/{@link CommandHandler}/{@link EventHandler}\
+   */
   public registerHandlers(...handlers: any[]) {
     registerHandlers({ emitter: this.emitter, mediator: this.mediator, handlers: handlers });
   }

@@ -2,8 +2,13 @@ import 'reflect-metadata';
 import { EventInstanceMetadata, EventMetadata, EventType } from '../types';
 import { EVENT_METADATA_KEY } from './constants';
 
+/**
+ * decorates a class and adds {@link EventInstanceMetadata} in order to make it behave like an Event(mem)
+ * @param eventKind the type of event
+ * @param name the name of event
+ * @returns a decorated class which purpose is to be an Event(mem)
+ */
 const BaseEvent = (eventKind: EventType, name?: string) =>
-  // function <T extends { new (...args: any[]): {} }>(constructor: T): T {
   function <T extends { new (...args: any[]): {} }>(constructor: T): T {
     const eventMeta: EventMetadata = {
       name: name ?? extractNameFromConstructor(constructor, eventKind),
@@ -31,8 +36,22 @@ const BaseEvent = (eventKind: EventType, name?: string) =>
     };
   };
 
+/**
+ * adds {@link EventMetadata} to the decorated class and {@link EventInstanceMetadata} to the instances created by the decorated class
+ * @returns a class decorated with BaseEvent of type Query
+ */
 export const Query = (name?: string) => BaseEvent(EventType.QUERY, name);
+
+/**
+ * adds {@link EventInstanceMetadata} to the instances created by the decorated class
+ * @returns a class decorated with BaseEvent of type Query
+ */
 export const Command = (name?: string) => BaseEvent(EventType.COMMAND, name);
+
+/**
+ * adds {@link EventInstanceMetadata} to the instances created by the decorated class
+ * @returns a class decorated with BaseEvent of type Query
+ */
 export const Event = (name?: string) => BaseEvent(EventType.EVENT, name);
 
 export const getEventMetadata = (object: Record<string, any>) => {

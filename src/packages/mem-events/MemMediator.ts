@@ -3,7 +3,12 @@ import { NoListenerError, OneListenerAcceptedError } from './exceptions';
 import { getEventMetadata } from './decorators';
 import { guardEvent } from './utils';
 
-// 1 Event <-> 1 Listener ( Query | Command )
+/**
+ * singleton\
+ * 1 {@link Query}/{@link Command} - 1 {@link QueryHandler}/{@link CommandHandler}, 0..* {@link EventHandler}\
+ * Types of events: {@link Event}/{@link Query}/{@link Command}
+ * {@link Query}/{@link Command} are also of type {@link Event}
+ */
 class MemMediator implements Mediator {
   private static instance: MemMediator = null;
   private eventEmitter: Emitter;
@@ -20,7 +25,11 @@ class MemMediator implements Mediator {
     return this.instance;
   }
 
-  // Register a handler for this event (query | command)
+  /**
+   * registers a callback for a {@link Query}/{@link Command}
+   * @param eventName
+   * @param callback
+   */
   public on(eventName: string, callback: EventCallback) {
     const listenerExists = this.listeners.has(eventName);
 
@@ -31,8 +40,11 @@ class MemMediator implements Mediator {
     this.listeners.set(eventName, callback);
   }
 
-  // Send this event
-  // Receive a response from the handler
+  /**
+   * sends a Query/Command to the appropriate {@link QueryHandler}/{@link CommandHandler}
+   * @param event an instance of a class decorated with {@link Event}/{@link Query}/{@link Command}
+   * @returns the response that the handler returns
+   */
   public async send(event: any) {
     guardEvent(event);
 
@@ -46,9 +58,11 @@ class MemMediator implements Mediator {
     return await listener(event);
   }
 
-  // Send this event
-  // Emit this event forward
-  // Receive a response from the handler
+  /**
+   * emits this event forward, sends a {@link Query}/{@link Command} to the appropriate {@link QueryHandler}/{@link CommandHandler}
+   * @param event an instance of a class decorated with {@link Event}/{@link Query}/{@link Command}
+   * @returns the response that the handler returns
+   */
   public async emit(event: any) {
     guardEvent(event);
 
