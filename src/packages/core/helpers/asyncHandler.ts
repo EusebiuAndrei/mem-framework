@@ -12,11 +12,11 @@ export default (execution: AsyncFunction) => async (
   // execution(req, res, next).catch(next);
   try {
     const api: ApiResponse = await execution(req, res, next);
-    if (api instanceof ApiResponse) api.send(res);
+    if (api instanceof ApiResponse) return api.send(res);
     // else ?
   } catch (err) {
     if (err instanceof HttpError) {
-      err.send(res);
+      return err.send(res);
     }
 
     next(err);

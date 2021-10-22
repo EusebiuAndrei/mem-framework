@@ -1,4 +1,4 @@
-import { BadRequestError } from './../../packages/core/exceptions/api/ApiError';
+import { BadRequestException } from './../../packages/core/exceptions/api';
 import { Controller, Get, Use } from '../../packages/core/decorators';
 import { Ok } from '../../packages/core/exceptions';
 import { GetHelloQuery } from '../modules/hello/queries/GetHelloQuery';
@@ -16,8 +16,8 @@ class HelloController {
   @Get()
   public async getHello(req: Request, res: Response): Promise<Ok> {
     const result = await this._mediator.send(createEvent(GetHelloQuery, { type: 1 }));
-    // throw new Error('some');
-    // throw new BadRequestError();
+    throw new Error('some');
+    // throw new BadRequestException();
     return new Ok(result);
   }
 }

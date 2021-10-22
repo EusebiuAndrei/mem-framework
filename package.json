@@ -14,7 +14,8 @@
     "eslint": "eslint . --ext .js,.ts",
     "test": "jest --forceExit --detectOpenHandles --coverage --verbose",
     "gen-docs": "npx typedoc --out ./docs --entryPointStrategy expand ./src/packages",
-    "gen-docs-watch": "npx typedoc --watch --out ./docs --entryPointStrategy expand ./src/packages"
+    "gen-docs-watch": "npx typedoc --watch --out ./docs --entryPointStrategy expand ./src/packages",
+    "dev:ts": "npx ts-node src/app/index"
   },
   "repository": {
     "type": "git",

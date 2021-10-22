@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import { HttpError, InternalError } from '../exceptions';
+import { HttpError, InternalException } from '../exceptions';
 import { environment } from '../helpers';
 
 class ErrorHandler {
@@ -35,8 +35,8 @@ class ErrorHandler {
           this.logger.error(err);
           return res.status(500).send(err.message);
         }
-        new InternalError().send(res);
-        // HttpError.handle(new InternalError(), res);
+        new InternalException().send(res);
+        // HttpError.handle(new InternalException(), res);
       }
     });
   }

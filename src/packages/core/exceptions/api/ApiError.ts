@@ -1,19 +1,5 @@
-import { HttpStatus, HttpResponseSender } from './../../types';
+import { HttpResponseSender } from './../../types';
 import { Response } from 'express';
-import { environment } from '../../helpers';
-
-enum ErrorType {
-  BAD_TOKEN = 'BadTokenError',
-  TOKEN_EXPIRED = 'TokenExpiredError',
-  UNAUTHORIZED = 'AuthFailureError',
-  ACCESS_TOKEN = 'AccessTokenError',
-  INTERNAL = 'InternalError',
-  NOT_FOUND = 'NotFoundError',
-  NO_ENTRY = 'NoEntryError',
-  NO_DATA = 'NoDataError',
-  BAD_REQUEST = 'BadRequestError',
-  FORBIDDEN = 'ForbiddenError',
-}
 
 export class HttpError extends Error implements HttpResponseSender {
   constructor(
@@ -50,18 +36,6 @@ export class HttpError extends Error implements HttpResponseSender {
     }
 
     return res.status(this.status).json(this.generateHttpResponse());
-  }
-}
-
-export class BadRequestError extends HttpError {
-  constructor(description = 'Bad Request') {
-    super(HttpStatus.BAD_REQUEST, description);
-  }
-}
-
-export class InternalError extends HttpError {
-  constructor(description = 'Internal server error') {
-    super(HttpStatus.BAD_REQUEST, description);
   }
 }
 
