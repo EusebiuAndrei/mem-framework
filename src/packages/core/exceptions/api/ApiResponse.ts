@@ -26,12 +26,6 @@ export abstract class ApiResponse implements HttpResponseSender {
   }
 }
 
-export class Ok extends ApiResponse {
-  constructor(message: string | Record<string, any>) {
-    super(HttpStatus.ACCEPTED, message);
-  }
-}
-
 // export class AccessTokenErrorResponse extends ApiResponse {
 //   private instruction = 'refresh_token';
 
