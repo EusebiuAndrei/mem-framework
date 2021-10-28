@@ -15,7 +15,8 @@
     "test": "jest --forceExit --detectOpenHandles --coverage --verbose",
     "gen-docs": "npx typedoc --out ./docs --entryPointStrategy expand ./src/packages",
     "gen-docs-watch": "npx typedoc --watch --out ./docs --entryPointStrategy expand ./src/packages",
-    "dev:ts": "npx ts-node src/app/index"
+    "ts:start": "npx ts-node src/app/index.ts",
+    "ts:watch": "npx ts-node-dev src/app/index.ts"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
+    "ts-node-dev": "^1.1.8",
     "typedoc": "^0.22.6",
     "typeorm": "^0.2.32",
     "uuidv4": "^6.2.6",

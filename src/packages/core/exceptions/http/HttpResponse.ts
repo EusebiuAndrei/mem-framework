@@ -1,15 +1,15 @@
-import { HttpResponseSender, HttpStatus } from './../../types';
+import { HttpResponseSender, HttpStatus } from '../../types';
 import { Response } from 'express';
 
-export abstract class ApiResponse implements HttpResponseSender {
+class HttpResponse implements HttpResponseSender {
   constructor(private status: HttpStatus, private message: string | Record<string, any>) {}
 
-  protected prepare(res: Response, apiResponse: ApiResponse): Response {
+  protected prepare(res: Response, httpResponse: HttpResponse): Response {
     if (this.message === 'string') {
-      res.status(this.status).send(apiResponse);
+      res.status(this.status).send(httpResponse);
     }
 
-    return res.status(this.status).json(ApiResponse.sanitize(apiResponse));
+    return res.status(this.status).json(HttpResponse.sanitize(httpResponse));
   }
 
   private static sanitize(response: Record<string, any>): Record<string, any> {
@@ -25,6 +25,8 @@ export abstract class ApiResponse implements HttpResponseSender {
     return this.prepare(res, this);
   }
 }
+
+export default HttpResponse;
 
 // export class AccessTokenErrorResponse extends ApiResponse {
 //   private instruction = 'refresh_token';

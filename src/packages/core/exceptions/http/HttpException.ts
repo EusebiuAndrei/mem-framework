@@ -1,7 +1,7 @@
-import { HttpResponseSender } from './../../types';
+import { HttpResponseSender } from '../../types';
 import { Response } from 'express';
 
-export class HttpError extends Error implements HttpResponseSender {
+class HttpException extends Error implements HttpResponseSender {
   constructor(
     private readonly status: number,
     private readonly response: string | Record<string, any>,
@@ -38,6 +38,8 @@ export class HttpError extends Error implements HttpResponseSender {
     return res.status(this.status).json(this.generateHttpResponse());
   }
 }
+
+export default HttpException;
 
 /*
 export abstract class ApiError extends Error {

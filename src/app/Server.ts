@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { Express } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { injectable } from 'inversify';
@@ -15,10 +14,16 @@ class Server extends ExpressServer {
     super(controller, { logger: Logger }, { port });
   }
 
-  async useMiddlewares(app: Express): Promise<void> {
-    app.use(bodyParser.json({ limit: '10mb' }));
-    app.use(bodyParser.urlencoded({ limit: '10mb', extended: true, parameterLimit: 50000 }));
-    app.use(cors({ origin: corsUrl, optionsSuccessStatus: 200 }));
+  async setupMiddlewares(): Promise<void> {
+    this.useMiddleware(bodyParser.json({ limit: '10mb' }));
+    this.useMiddleware(
+      bodyParser.urlencoded({ limit: '10mb', extended: true, parameterLimit: 50000 }),
+    );
+    this.useMiddleware(cors({ origin: corsUrl, optionsSuccessStatus: 200 }));
+  }
+
+  async setupErrorMiddlewares(): Promise<void> {
+    return;
   }
 }
 

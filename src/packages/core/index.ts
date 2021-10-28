@@ -7,3 +7,5 @@ export * from './express';
 
 export * from './helpers';
 export * from './types';
+
+export * from './middlewares';

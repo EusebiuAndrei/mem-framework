@@ -1,5 +1,5 @@
-import { Response } from 'express';
-// Brand new
+import { ErrorRequestHandler, NextFunction, RequestHandler, Response } from 'express';
+
 export enum HttpMethod {
   GET = 'get',
   POST = 'post',
@@ -9,10 +9,6 @@ export enum HttpMethod {
   ALL = 'all',
   HEAD = 'head',
   OPTIONS = 'options',
-}
-
-export interface HttpResponseSender {
-  send(res: Response): Response;
 }
 
 export enum HttpStatus {
@@ -66,13 +62,30 @@ export enum HttpStatus {
   HTTP_VERSION_NOT_SUPPORTED = 505,
 }
 
+export interface HttpResponseSender {
+  send(res: Response): Response;
+}
+
+export type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<any>;
+export type AsyncErrorRequestHandler = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<any>;
+
+export type Middleware = RequestHandler | AsyncRequestHandler;
+export type ErrorMiddleware = ErrorRequestHandler | AsyncErrorRequestHandler;
+
 export interface ControllerMetadata {
   path: string;
-  middlewares?: Function[];
+  middlewares?: Middleware[];
+  errorMiddlewares?: ErrorMiddleware[];
 }
 
 export interface RouteMetadata {
   path: string;
   method: HttpMethod;
-  middlewares?: Function[];
+  middlewares?: Middleware[];
+  errorMiddlewares?: ErrorMiddleware[];
 }
