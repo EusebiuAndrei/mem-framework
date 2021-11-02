@@ -1,8 +1,9 @@
 {
-  "name": "nodejs-backend-architecture",
-  "version": "1.0.2",
-  "description": "The architecture for nodejs backend application. It is build on top of expressjs using typescript.",
-  "main": "index.js",
+  "name": "@eusebiu_gagea/mem",
+  "version": "1.1.2",
+  "description": "A scalable framework based on EventEmitter. It is build on top of expressjs using typescript.",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "start": "npm run build && npm run serve",
     "serve": "node -r dotenv/config build/server.js",
@@ -16,23 +17,17 @@
     "gen-docs": "npx typedoc --out ./docs --entryPointStrategy expand ./src/packages",
     "gen-docs-watch": "npx typedoc --watch --out ./docs --entryPointStrategy expand ./src/packages",
     "ts:start": "npx ts-node src/app/index.ts",
-    "ts:watch": "npx ts-node-dev src/app/index.ts"
+    "ts:watch": "npx ts-node-dev src/app/index.ts",
+    "pck:publish": "npx tsc && npm publish --access public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/EusebiuAndrei/framework.git"
+    "url": "git+https://github.com/EusebiuAndrei/framework.git"
   },
-  "author": "AfterAcademy",
+  "author": "EusebiuAndrei",
   "license": "Apache-2.0",
   "dependencies": {
     "@feathersjs/hooks": "^0.6.2",
-    "@hapi/joi": "^17.1.1",
-    "@types/bcryptjs": "^2.4.2",
-    "@types/passport": "^1.0.6",
-    "@types/passport-jwt": "^3.0.5",
-    "@types/passport-local": "^1.0.33",
-    "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
@@ -41,13 +36,12 @@
     "express": "^4.17.1",
     "inversify": "^5.0.5",
     "inversify-inject-decorators": "^3.1.0",
-    "joi-extract-type": "^15.0.8",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
     "ts-node-dev": "^1.1.8",
     "typedoc": "^0.22.6",
-    "typeorm": "^0.2.32",
+    "typeorm": "^0.2.38",
     "uuidv4": "^6.2.6",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
@@ -81,5 +75,12 @@
     "ts-jest": "^26.1.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.8.3"
+  },
+  "bugs": {
+    "url": "https://github.com/EusebiuAndrei/framework/issues"
+  },
+  "homepage": "https://github.com/EusebiuAndrei/framework#readme",
+  "directories": {
+    "doc": "docs"
   }
 }
