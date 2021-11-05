@@ -73,9 +73,9 @@ abstract class ExpressServer {
 
       const router = Router();
 
-      router.use(controllerMiddlewares);
+      if (controllerMiddlewares.length > 0) router.use(controllerMiddlewares);
       attachHandlersToRouter(controller, router);
-      router.use(controllerErrorMiddlewares);
+      if (controllerErrorMiddlewares.length > 0) router.use(controllerErrorMiddlewares);
 
       this.routers[controllerMetadata.path] = router;
     });
@@ -128,7 +128,7 @@ const attachHandlersToRouter = (controller: any, router: Router) => {
     const routeErrorMiddlewares = routeMetadata.errorMiddlewares ?? ([] as any[]);
 
     router[routeMetadata.method](
-      routeMetadata.path,
+      `/${routeMetadata.path}`,
       routeMiddlewares,
       asyncRequestHandlerWrapper(async (req: Request, res: Response) => {
         // @ts-ignore

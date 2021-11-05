@@ -1,110 +1,153 @@
 import HttpResponse from './HttpResponse';
 import { HttpStatus } from '../../constants';
 
-export class Continue extends HttpResponse {
+class Continue extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.CONTINUE, message);
   }
 }
 
-export class SwitchingProtocols extends HttpResponse {
+export const HttpContinue = (message: string | Record<string, any>) => new Continue(message);
+
+class SwitchingProtocols extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.SWITCHING_PROTOCOLS, message);
   }
 }
 
-export class Processing extends HttpResponse {
+export const HttpSwitchingProtocols = (message: string | Record<string, any>) =>
+  new SwitchingProtocols(message);
+
+class Processing extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.PROCESSING, message);
   }
 }
 
-export class Earlyhints extends HttpResponse {
+export const HttpProcessing = (message: string | Record<string, any>) => new Processing(message);
+
+class Earlyhints extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.EARLYHINTS, message);
   }
 }
 
-export class Ok extends HttpResponse {
+export const HttpEarlyhints = (message: string | Record<string, any>) => new Earlyhints(message);
+
+class Ok extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.OK, message);
   }
 }
 
-export class Created extends HttpResponse {
+export const HttpOk = (message: string | Record<string, any>) => new Ok(message);
+
+class Created extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.CREATED, message);
   }
 }
 
-export class Accepted extends HttpResponse {
+export const HttpCreated = (message: string | Record<string, any>) => new Created(message);
+
+class Accepted extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.ACCEPTED, message);
   }
 }
 
-export class NonAuthoritativeInformation extends HttpResponse {
+export const HttpAccepted = (message: string | Record<string, any>) => new Accepted(message);
+
+class NonAuthoritativeInformation extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.NON_AUTHORITATIVE_INFORMATION, message);
   }
 }
 
-export class NoContent extends HttpResponse {
+export const HttpNonAuthoritativeInformation = (message: string | Record<string, any>) =>
+  new NonAuthoritativeInformation(message);
+
+class NoContent extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.NO_CONTENT, message);
   }
 }
 
-export class ResetContent extends HttpResponse {
+export const HttpNoContent = (message: string | Record<string, any>) => new NoContent(message);
+
+class ResetContent extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.RESET_CONTENT, message);
   }
 }
 
-export class PartialContent extends HttpResponse {
+export const HttpResetContent = (message: string | Record<string, any>) =>
+  new ResetContent(message);
+
+class PartialContent extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.PARTIAL_CONTENT, message);
   }
 }
 
-export class Ambiguous extends HttpResponse {
+export const HttpPartialContent = (message: string | Record<string, any>) =>
+  new PartialContent(message);
+
+class Ambiguous extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.AMBIGUOUS, message);
   }
 }
 
-export class MovedPermanently extends HttpResponse {
+export const HttpAmbiguous = (message: string | Record<string, any>) => new Ambiguous(message);
+
+class MovedPermanently extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.MOVED_PERMANENTLY, message);
   }
 }
 
-export class Found extends HttpResponse {
+export const HttpMovedPermanently = (message: string | Record<string, any>) =>
+  new MovedPermanently(message);
+
+class Found extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.FOUND, message);
   }
 }
 
-export class SeeOther extends HttpResponse {
+export const HttpFound = (message: string | Record<string, any>) => new Found(message);
+
+class SeeOther extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.SEE_OTHER, message);
   }
 }
 
-export class NotModified extends HttpResponse {
+export const HttpSeeOther = (message: string | Record<string, any>) => new SeeOther(message);
+
+class NotModified extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.NOT_MODIFIED, message);
   }
 }
 
-export class TemporaryRedirect extends HttpResponse {
+export const HttpNotModified = (message: string | Record<string, any>) => new NotModified(message);
+
+class TemporaryRedirect extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.TEMPORARY_REDIRECT, message);
   }
 }
 
-export class PermanentRedirect extends HttpResponse {
+export const HttpTemporaryRedirect = (message: string | Record<string, any>) =>
+  new TemporaryRedirect(message);
+
+class PermanentRedirect extends HttpResponse {
   constructor(message: string | Record<string, any>) {
     super(HttpStatus.PERMANENT_REDIRECT, message);
   }
 }
+
+export const HttpPermanentRedirect = (message: string | Record<string, any>) =>
+  new PermanentRedirect(message);
