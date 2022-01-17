@@ -1,6 +1,6 @@
 {
   "name": "@eusebiu_gagea/mem",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A scalable framework based on EventEmitter. It is build on top of expressjs using typescript.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
