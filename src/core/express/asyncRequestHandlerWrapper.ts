@@ -24,5 +24,3 @@ export default (requestHandler: Middleware) => async (
     next(err);
   }
 };
-
-// lala

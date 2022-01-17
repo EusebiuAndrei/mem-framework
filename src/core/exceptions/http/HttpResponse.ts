@@ -21,9 +21,12 @@ class HttpResponse implements HttpResponseSender {
   private static sanitize(response: Record<string, any>): Record<string, any> {
     const clone: Record<string, any> = {} as Record<string, any>;
     Object.assign(clone, response);
-    // delete {some_field};
     delete clone.status;
-    for (const i in clone) if (typeof clone[i] === 'undefined') delete clone[i];
+    for (const i in clone) {
+      if (typeof clone[i] === 'undefined') {
+        delete clone[i];
+      }
+    }
     return clone;
   }
 

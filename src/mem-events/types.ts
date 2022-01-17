@@ -1,3 +1,8 @@
+/**
+ * 1 {@link Query}/{@link Command} - 1 {@link QueryHandler}/{@link CommandHandler}, 0..* {@link EventHandler}\
+ * Types of events: {@link Event}/{@link Query}/{@link Command}
+ * {@link Query}/{@link Command} are also of type {@link Event}
+ */
 export enum EventType {
   QUERY = 'QUERY',
   COMMAND = 'COMMAND',
